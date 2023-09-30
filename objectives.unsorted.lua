@@ -27,7 +27,7 @@ a_env.objectives.profession = {}
 a_env.objectives.profession.valdrakken_mettle = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70221 } })
 
 a_env.objectives.reputation = {}
-a_env.objectives.reputation.loamm_niffen = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 75665 } })
+a_env.objectives.reputation.loamm_niffen = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 75665, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } })
 a_env.objectives.reputation.valdrakken_noevent = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70750 } })
 a_env.objectives.reputation.valdrakken_dragonbane = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72374 } })
 a_env.objectives.reputation.valdrakken_dreamsurge = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 77976 } })
@@ -36,6 +36,12 @@ a_env.objectives.valdrakken_heroic = table_merge_shallow_left({ a_env.weekly_que
 a_env.objectives.weekly_sign = {}
 a_env.objectives.weekly_sign.world_quests = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72728 } }) -- check buff 225788, red "not picked up", level 70, В КОНЦЕ НЕДЕЛИ КВЕСТ МОЖЕТ ЕЩЁ ЖИТЬ, А БАФФА УЖЕ НЕТ!
 a_env.objectives.weekly_sign.timewalking_cataclysm = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72810 } })
+
+--[[
+/dump C_QuestLog.GetLogIndexForQuestID(75665) -> 61
+/run text, objectiveType, finished, fulfilled, required = GetQuestObjectiveInfo(75665, 1, false)
+
+]]
 
 --[[
 C_QuestLog.GetLogIndexForQuestID(72728)
