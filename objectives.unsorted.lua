@@ -2,6 +2,24 @@ local a_name, a_env = ...
 
 local table_merge_shallow_left = _G["SR13-Lib"].table_utils.table_merge_shallow_left
 
+a_env.PlayerHasProfession = function(objective)
+   local profession_skill_line_id = C_TradeSkillUI.GetProfessionSkillLineID(objective.profession)
+   if not profession_skill_line_id then return end
+
+   local profession_local_name = C_TradeSkillUI.GetTradeSkillDisplayName(profession_skill_line_id)
+   if not profession_local_name or profession_local_name == '' then return end
+
+   local prof1, prof2 = GetProfessions()
+   if prof1 then
+      local name, icon = GetProfessionInfo(prof1)
+      if name == profession_local_name then return "ok", "GetProfessionInfo1Name" end
+   end
+   if prof2 then
+      local name, icon = GetProfessionInfo(prof2)
+      if name == profession_local_name then return "ok", "GetProfessionInfo2Name" end
+   end
+end
+
 -- Enum.Profession.Mining
 a_env.objectives.profession_mining = {}
 a_env.objectives.profession_mining.valdrakken_serevite = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70618 } })
@@ -25,6 +43,16 @@ a_env.objectives.profession_alchemy.valdrakken_healing_potion = table_merge_shal
 
 a_env.objectives.profession = {}
 a_env.objectives.profession.valdrakken_mettle = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70221 } })
+
+a_env.objectives.profession_jewelcrafting = {}
+a_env.objectives.profession_jewelcrafting.loamm_whelkshell = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 75362, profession = Enum.Profession.Jewelcrafting } })
+a_env.objectives.profession_jewelcrafting.loamm_whelkshell.available = a_env.PlayerHasProfession
+
+-- Enum.Profession.Inscription
+a_env.objectives.profession_inscription = {}
+a_env.objectives.profession_inscription.loamm_proclamation = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 75573, profession = Enum.Profession.Inscription } })
+a_env.objectives.profession_inscription.loamm_proclamation.available = a_env.PlayerHasProfession
+
 
 a_env.objectives.reputation = {}
 a_env.objectives.reputation.loamm_niffen = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 75665, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } })

@@ -56,6 +56,8 @@ function broker:OnEnter()
    AddSingleObjectiveLine(tooltip, a_env.objectives.profession_tailoring.valdrakken_simple_reagent_bag)
    AddSingleObjectiveLine(tooltip, a_env.objectives.profession_alchemy.valdrakken_reclaim)
    AddSingleObjectiveLine(tooltip, a_env.objectives.profession_alchemy.valdrakken_healing_potion)
+   AddSingleObjectiveLine(tooltip, a_env.objectives.profession_jewelcrafting.loamm_whelkshell)
+   AddSingleObjectiveLine(tooltip, a_env.objectives.profession_inscription.loamm_proclamation)
    AddSingleObjectiveLine(tooltip, a_env.objectives.profession.valdrakken_mettle)
 
    tooltip:SmartAnchorTo(self)
