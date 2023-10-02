@@ -20,6 +20,7 @@ a_env.objectives.dreamsurge.shaping = {
    name = a_env.GetObjectiveQuestName,
    info = ("select %s Champion"):format(EPIC_PURPLE_COLOR:WrapTextInColorCode(415)),
    state = a_env.GetObjectiveStateDefault,
+   progress = a_env.GetObjectiveQuestSingleObjectiveProgressString,
    expansion = 111, -- Enum.Dragonflight
    season = 2000,
    available = true, -- Check if have expansion + maxlevel

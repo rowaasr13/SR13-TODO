@@ -20,22 +20,33 @@ a_env.PlayerHasProfession = function(objective)
    end
 end
 
+local weekly_profession_quest_template = table_merge_shallow_left({ a_env.weekly_quest_template, {
+   available = a_env.PlayerHasProfession,
+   progress = a_env.GetObjectiveQuestSingleObjectiveProgressString,
+} })
+
 -- Enum.Profession.Mining
 a_env.objectives.profession_mining = {}
-a_env.objectives.profession_mining.valdrakken_serevite = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70618 } })
+a_env.objectives.profession_mining.valdrakken_draconium = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70617, profession = Enum.Profession.Mining } })
+a_env.objectives.profession_mining.valdrakken_serevite = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70618, profession = Enum.Profession.Mining } })
+a_env.objectives.profession_mining.valdrakken_earth = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 72157, profession = Enum.Profession.Mining } })
 
 a_env.objectives.profession_herbalism = {}
-a_env.objectives.profession_herbalism.valdrakken_saxifrage = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70615 } })
+a_env.objectives.profession_herbalism.valdrakken_saxifrage = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70615, profession = Enum.Profession.Herbalism } })
+a_env.objectives.profession_herbalism.valdrakken_hochenblume = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70616, profession = Enum.Profession.Herbalism } })
 
 a_env.objectives.profession_enchanting = {}
-a_env.objectives.profession_herbalism.valdrakken_bracer_leech = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72173 } })
+a_env.objectives.profession_enchanting.valdrakken_bracer_leech = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 72173, profession = Enum.Profession.Enchanting } })
+a_env.objectives.profession_enchanting.loamm_relic = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 75865, profession = Enum.Profession.Enchanting } })
 
 a_env.objectives.profession_blacksmithing = {}
-a_env.objectives.profession_blacksmithing.valdrakken_explorer_boots = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70211 } })
+a_env.objectives.profession_blacksmithing.valdrakken_explorer_boots = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70211, profession = Enum.Profession.Blacksmithing } })
+a_env.objectives.profession_blacksmithing.loamm_plate = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 75569, profession = Enum.Profession.Blacksmithing } })
 
 a_env.objectives.profession_tailoring = {}
-a_env.objectives.profession_tailoring.valdrakken_surveyor_robe = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70572 } })
-a_env.objectives.profession_tailoring.valdrakken_simple_reagent_bag = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70587 } })
+a_env.objectives.profession_tailoring.valdrakken_surveyor_robe = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70572, profession = Enum.Profession.Tailoring } })
+a_env.objectives.profession_tailoring.valdrakken_simple_reagent_bag = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70587, profession = Enum.Profession.Tailoring } })
+a_env.objectives.profession_tailoring.valdrakken_orders = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70595, profession = Enum.Profession.Tailoring } })
 
 a_env.objectives.profession_alchemy = {}
 a_env.objectives.profession_alchemy.valdrakken_reclaim = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70530 } })
@@ -45,25 +56,29 @@ a_env.objectives.profession = {}
 a_env.objectives.profession.valdrakken_mettle = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70221 } })
 
 a_env.objectives.profession_jewelcrafting = {}
-a_env.objectives.profession_jewelcrafting.loamm_whelkshell = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 75362, profession = Enum.Profession.Jewelcrafting } })
-a_env.objectives.profession_jewelcrafting.loamm_whelkshell.available = a_env.PlayerHasProfession
+a_env.objectives.profession_jewelcrafting.loamm_whelkshell = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 75362, profession = Enum.Profession.Jewelcrafting } })
 
 -- Enum.Profession.Inscription
 a_env.objectives.profession_inscription = {}
-a_env.objectives.profession_inscription.loamm_proclamation = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 75573, profession = Enum.Profession.Inscription } })
-a_env.objectives.profession_inscription.loamm_proclamation.available = a_env.PlayerHasProfession
-
+a_env.objectives.profession_inscription.loamm_proclamation = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 75573, profession = Enum.Profession.Inscription } })
 
 a_env.objectives.reputation = {}
 a_env.objectives.reputation.loamm_niffen = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 75665, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } })
 a_env.objectives.reputation.valdrakken_noevent = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70750 } })
 a_env.objectives.reputation.valdrakken_dragonbane = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72374 } })
 a_env.objectives.reputation.valdrakken_dreamsurge = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 77976 } })
-a_env.objectives.valdrakken_heroic = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 76122 } }) -- Complete 5 Heroic, Fighting is its own reward
+a_env.objectives.valdrakken_heroic = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 76122, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } }) -- Complete 5 Heroic, Fighting is its own reward
 
 a_env.objectives.weekly_sign = {}
 a_env.objectives.weekly_sign.world_quests = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72728 } }) -- check buff 225788, red "not picked up", level 70, В КОНЦЕ НЕДЕЛИ КВЕСТ МОЖЕТ ЕЩЁ ЖИТЬ, А БАФФА УЖЕ НЕТ!
-a_env.objectives.weekly_sign.timewalking_cataclysm = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72810 } })
+a_env.objectives.weekly_sign.timewalking_cataclysm = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72810, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } })
+a_env.objectives.weekly_sign.timewalking_cataclysm_token = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 40786 } }) -- add: item in inventory, item in inventory+no event - throw away
+a_env.objectives.weekly_sign.timewalking_burning_crusade = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72727, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } })
+a_env.objectives.weekly_sign.timewalking_burning_crusade_token = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 40168 } }) -- add: item in inventory, item in inventory+no event - throw away
+
+a_env.objectives.darkmoon_faire = {}
+a_env.objectives.darkmoon_faire.ears = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 29433, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } })
+
 
 --[[
 /dump C_QuestLog.GetLogIndexForQuestID(75665) -> 61
@@ -72,6 +87,8 @@ a_env.objectives.weekly_sign.timewalking_cataclysm = table_merge_shallow_left({ 
 ]]
 
 --[[
+Valdrakken profession weekly req: EXACTLY 44 in profession Jewelcrafting.
+
 C_QuestLog.GetLogIndexForQuestID(72728)
 C_QuestLog.GetNumQuestObjectives(75665)
 C_QuestLog.GetQuestAdditionalHighlights
@@ -86,17 +103,18 @@ C_QuestLog.SetMapForQuestPOIs(uiMapID)
 
 
 a_env.objectives.dreamsurge.TEST = {
-   76122 -- Fighting
-   29433 -- /dump [Test Your Strength]
+   70619 -- Skinning: Valdrakken bring leather
+
    70531 -- Alchemy: craft potions
    70595 -- Tailoring: orders
-
    70582 -- Tailoring: craft bolts
-
    72728 -- 10 WQ Weekly
 
-   -- Brewfest:
-   COREN dungeon
+DMF:
+   29514 Herbalism
+   29518 Mining
+
+Warn if Fighting is ready for turn-in: any favor up, aiding valdrakken/niffen both picked up or completed
 
 }
 
