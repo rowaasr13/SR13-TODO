@@ -15,8 +15,44 @@ local function AddSingleObjectiveLine(tooltip, objective)
    local name = a_env.GetLazy(objective, "name")
    local info = objective.info and a_env.GetLazy(objective, "info")
    local period = objective.period and a_env.GetLazy(objective, "period")
-   if state_color then state_text = state_color:WrapTextInColorCode(state) else state_text = state end
+   local progress = (state == "pickedup") and (objective.progress ~= nil) and a_env.GetLazy(objective, 'progress')
+   local uncolored_state_text = progress or a_env.state_display_text[state] or state
+   if state_color then state_text = state_color:WrapTextInColorCode(uncolored_state_text) else state_text = uncolored_state_text end
    tooltip:AddLine(name, state_text, info, period)
+end
+a_env.AddSingleObjectiveLine = AddSingleObjectiveLine -- TODO: TEMPORARY
+
+-- Only adds processed lines, no lazy values.
+local function AddSingleLineFromOutputTable(tooltip, line)
+   if line.separator then
+      return tooltip:AddSeparator()
+   end
+
+   if line.empty then
+      return tooltip:AddLine()
+   end
+
+   local name = line.name
+   local state = line.state
+   local state_color = line.state_color or a_env.state_colors[state]
+   local state_text
+   local info = line.info
+   local period = line.period
+   local progress = (state == "pickedup") and line.progress
+   local uncolored_state_text = progress or a_env.state_display_text[state] or state
+   if state_color then state_text = state_color:WrapTextInColorCode(uncolored_state_text) else state_text = uncolored_state_text end
+   local method = line.header and "AddHeader" or "AddLine"
+   tooltip:AddLine(name, state_text, info, period)
+end
+
+local function AddOutputTable(tooltip, output_table)
+   assert(tooltip, ("tooltip is %q"):format(tostring(tooltip)))
+   assert(output_table, ("output_table is %q"):format(tostring(output_table)))
+
+   for idx = 1, #output_table do
+      local objective = output_table[idx]
+      AddSingleLineFromOutputTable(tooltip, objective)
+   end
 end
 
 function broker:OnEnter()
@@ -26,15 +62,13 @@ function broker:OnEnter()
 
    AddSingleObjectiveLine(tooltip, a_env.objectives.valdrakken_heroic)
    AddSingleObjectiveLine(tooltip, a_env.objectives.weekly_sign.world_quests)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.weekly_sign.timewalking_cataclysm)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.weekly_sign.timewalking_cataclysm_token)
+   -- AddSingleObjectiveLine(tooltip, a_env.objectives.weekly_sign.timewalking_cataclysm)
+   -- AddSingleObjectiveLine(tooltip, a_env.objectives.weekly_sign.timewalking_cataclysm_token)
    AddSingleObjectiveLine(tooltip, a_env.objectives.weekly_sign.timewalking_burning_crusade)
    AddSingleObjectiveLine(tooltip, a_env.objectives.weekly_sign.timewalking_burning_crusade_token)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.darkmoon_faire.ears)
+   -- AddSingleObjectiveLine(tooltip, a_env.objectives.darkmoon_faire.ears)
 
-   AddSingleObjectiveLine(tooltip, a_env.objectives.reputation.valdrakken_noevent)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.reputation.valdrakken_dragonbane)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.reputation.valdrakken_dreamsurge)
+   AddOutputTable(tooltip, a_env.OutputTableDragonflightReputation())
    AddSingleObjectiveLine(tooltip, a_env.objectives.reputation.loamm_niffen)
    AddSingleObjectiveLine(tooltip, a_env.objectives.worldboss.zaqali_elders)
    AddSingleObjectiveLine(tooltip, a_env.objectives.dreamsurge.investigation)

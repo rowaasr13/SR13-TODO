@@ -10,18 +10,57 @@ function a_env.GetObjectiveStateDefault(objective)
    if completed then return "ok", "completed" end
 
    local turnin = (objective.turnin ~= nil) and a_env.GetLazy(objective, 'turnin')
-   if turnin then return "ok", "turn-in" end
+   if turnin then return "ok", "turnin" end
 
    if objective.pickedup == nil then
       return "ok", "available"
    else
       local pickedup = a_env.GetLazy(objective, 'pickedup')
       if pickedup then
-         local progress = (objective.progress ~= nil) and a_env.GetLazy(objective, 'progress')
-         if progress then return "ok", progress end
-         return "ok", "picked up"
+         return "ok", "pickedup"
        else
-         return "ok", "not picked up"
+         return "ok", "notpickedup"
+      end
+   end
+end
+
+function a_env.CalculateObjectivesToOutputTable(objectives)
+   local output = {}
+   for idx = 1, #objectives do
+      local objective = objectives[idx]
+
+      local state = a_env.GetLazy(objective, "state")
+      local state_color = a_env.state_colors[state]
+      local name = a_env.GetLazy(objective, "name")
+      local info = objective.info and a_env.GetLazy(objective, "info")
+      local period = objective.period and a_env.GetLazy(objective, "period")
+      local progress = (state == "pickedup") and (objective.progress ~= nil) and a_env.GetLazy(objective, 'progress')
+
+      local output_line = {
+         state = state,
+         state_color = state_color,
+         progress = progress,
+         name = name,
+         info = info,
+         period = period,
+      }
+      output[idx] = output_line
+   end
+
+   return output
+end
+
+-- Works with preprocessed output tables.
+-- If any quest is active (pickedup/turnin) then entire table is replaced with this quest.
+-- TODO: if all quest are completed, then entire table is replaced with special provided output.
+function a_env.OutputTableLeaveOnlyActiveQuest(output_table)
+   for idx = 1, #output_table do
+      local objective = output_table[idx]
+      print(objective.name, objective.state)
+      if objective.state == "pickedup" or objective.state == "turnin" then
+         wipe(output_table)
+         output_table[1] = objective
+         return
       end
    end
 end
@@ -60,7 +99,13 @@ a_env.daily_quest_template = table_merge_shallow_left({ repeatable_quest_templat
 a_env.weekly_quest_template = table_merge_shallow_left({ repeatable_quest_template, { period = "weekly" } })
 
 a_env.state_colors = {
-   completed = GREEN_FONT_COLOR,
-   ["picked up"] = YELLOW_FONT_COLOR,
-   ["turn-in"] = YELLOW_FONT_COLOR,
+   ["completed"] = GREEN_FONT_COLOR,
+   ["pickedup"] = YELLOW_FONT_COLOR,
+   ["turnin"] = YELLOW_FONT_COLOR,
+}
+
+a_env.state_display_text = {
+   ["pickedup"] = "picked up",
+   ["turnin"] = "turn-in",
+   ["notpickedup"] = "not picked up",
 }

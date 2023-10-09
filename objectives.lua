@@ -9,7 +9,6 @@ local objective_example = {
 }
 
 a_env.objectives = {
-   worldboss = {}
+   worldboss = {},
+   reputation = {},
 }
-
-_Gobjectives = a_env.objectives

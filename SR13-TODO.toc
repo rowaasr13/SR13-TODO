@@ -12,6 +12,7 @@ objectives.dungeons.lua
 
 objectives.unsorted.lua
 
+objectives.dragonflight.reputation.lua
 objectives.dragonflight.worldboss.lua
 objectives.dragonflight.dreamsurge.lua
 
