@@ -52,16 +52,23 @@ end
 
 -- Works with preprocessed output tables.
 -- If any quest is active (pickedup/turnin) then entire table is replaced with this quest.
--- TODO: if all quest are completed, then entire table is replaced with special provided output.
+-- If all quest are completed, then entire table is replaced with special provided output from .all_completed.
 function a_env.OutputTableLeaveOnlyActiveQuest(output_table)
+   local all_completed = true
    for idx = 1, #output_table do
       local objective = output_table[idx]
-      print(objective.name, objective.state)
       if objective.state == "pickedup" or objective.state == "turnin" then
          wipe(output_table)
          output_table[1] = objective
          return
       end
+      if objective.state ~= "completed" then all_completed = false end
+   end
+
+   if all_completed and output_table.all_completed and #output_table > 0 then
+      local objective = output_table.all_completed
+      wipe(output_table)
+      output_table[1] = objective
    end
 end
 
