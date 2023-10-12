@@ -15,6 +15,7 @@ objectives.unsorted.lua
 objectives.dragonflight.reputation.lua
 objectives.dragonflight.worldboss.lua
 objectives.dragonflight.dreamsurge.lua
+objectives.dragonflight.profession.lua
 
 objectives.event.brewfest.lua
 

@@ -11,4 +11,5 @@ local objective_example = {
 a_env.objectives = {
    worldboss = {},
    reputation = {},
+   profession = {},
 }
