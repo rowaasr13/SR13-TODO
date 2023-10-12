@@ -10,6 +10,7 @@ local valdrakken_accord = {
    { valdrakken_noevent = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70750 } }) },
    { valdrakken_dragonbane = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72374 } }) },
    { valdrakken_zskera = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 75259 } }) },
+   { valdrakken_researchers = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 75860 } }) },
    { valdrakken_dreamsurge = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 77976 } }) },
 }
 
@@ -20,7 +21,8 @@ a_env.objectives.valdrakken_heroic = table_merge_shallow_left({ a_env.weekly_que
 
 function a_env.OutputTableDragonflightReputation()
    local output_table = a_env.CalculateObjectivesToOutputTable(pairs_get_vals(valdrakken_accord))
-   output_table.all_completed = { name = output_table[1].name, state = "completed", period = output_table[1].period }
+   output_table.all_completed = { name = output_table[1].name, state = output_table[1].state, period = output_table[1].period }
+   output_table.none_completed = { name = output_table[1].name, state = output_table[1].state, period = output_table[1].period }
 
    a_env.OutputTableLeaveOnlyActiveQuest(output_table)
 
