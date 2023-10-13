@@ -1,5 +1,7 @@
 local a_name, a_env = ...
 
+local table_merge_shallow_left = _G["SR13-Lib"].table_utils.table_merge_shallow_left
+
 local function GetLFGRandomDungeonInfoByDungeonId(required_dungeon_id) -- only returns info for dungeons available to player
    for idx = 1, GetNumRandomDungeons() do
       local id, name = GetLFGRandomDungeonInfo(idx)
@@ -56,5 +58,9 @@ local timewalking_lichking = {
 
    item_turn_in_item_id = 129928,
    item_turn_in_quest_id = 40173,
-
 }
+
+a_env.objectives.weekly_sign.timewalking_cataclysm = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72810, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } })
+a_env.objectives.weekly_sign.timewalking_cataclysm_token = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 40786 } }) -- add: item in inventory, item in inventory+no event - throw away
+a_env.objectives.weekly_sign.timewalking_burning_crusade = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72727, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } })
+a_env.objectives.weekly_sign.timewalking_burning_crusade_token = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 40168 } }) -- add: item in inventory, item in inventory+no event - throw away

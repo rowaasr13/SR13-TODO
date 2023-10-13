@@ -2,12 +2,7 @@ local a_name, a_env = ...
 
 local table_merge_shallow_left = _G["SR13-Lib"].table_utils.table_merge_shallow_left
 
-a_env.objectives.weekly_sign = {}
 a_env.objectives.weekly_sign.world_quests = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72728 } }) -- check buff 225788, red "not picked up", level 70, В КОНЦЕ НЕДЕЛИ КВЕСТ МОЖЕТ ЕЩЁ ЖИТЬ, А БАФФА УЖЕ НЕТ!
-a_env.objectives.weekly_sign.timewalking_cataclysm = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72810, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } })
-a_env.objectives.weekly_sign.timewalking_cataclysm_token = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 40786 } }) -- add: item in inventory, item in inventory+no event - throw away
-a_env.objectives.weekly_sign.timewalking_burning_crusade = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72727, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } })
-a_env.objectives.weekly_sign.timewalking_burning_crusade_token = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 40168 } }) -- add: item in inventory, item in inventory+no event - throw away
 
 a_env.objectives.darkmoon_faire = {}
 a_env.objectives.darkmoon_faire.ears = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 29433, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } })

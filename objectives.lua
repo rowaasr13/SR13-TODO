@@ -12,4 +12,5 @@ a_env.objectives = {
    worldboss = {},
    reputation = {},
    profession = {},
+   weekly_sign = {},
 }
