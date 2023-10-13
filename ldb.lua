@@ -34,6 +34,7 @@ local function AddSingleLineFromOutputTable(tooltip, line)
 
    local name = line.name
    local state = line.state
+   if state == "not available" then return end
    local state_color = line.state_color or a_env.state_colors[state]
    local state_text
    local info = line.info
@@ -61,11 +62,8 @@ function broker:OnEnter()
    tooltip:AddSeparator()
 
    AddSingleObjectiveLine(tooltip, a_env.objectives.valdrakken_heroic)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.weekly_sign.world_quests)
-   -- AddSingleObjectiveLine(tooltip, a_env.objectives.weekly_sign.timewalking_cataclysm)
-   -- AddSingleObjectiveLine(tooltip, a_env.objectives.weekly_sign.timewalking_cataclysm_token)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.weekly_sign.timewalking_burning_crusade)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.weekly_sign.timewalking_burning_crusade_token)
+   -- AddSingleObjectiveLine(tooltip, a_env.objectives.weekly_sign.world_quests)
+   AddOutputTable(tooltip, a_env.OutputTableTimewalking())
    -- AddSingleObjectiveLine(tooltip, a_env.objectives.darkmoon_faire.ears)
 
    AddOutputTable(tooltip, a_env.OutputTableDragonflightReputation())
