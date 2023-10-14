@@ -1,6 +1,22 @@
 local a_name, a_env = ...
 
 local table_merge_shallow_left = _G["SR13-Lib"].table_utils.table_merge_shallow_left
+local table_add_pairs = _G["SR13-Lib"].pair_utils.table_add_pairs
+local pairs_get_vals = _G["SR13-Lib"].pair_utils.pairs_get_vals
+
+local function GetProfessionName(objective)
+   local profession_skill_line_id = C_TradeSkillUI.GetProfessionSkillLineID(objective.profession)
+   if not profession_skill_line_id then return end
+
+   local profession_local_name = C_TradeSkillUI.GetTradeSkillDisplayName(profession_skill_line_id)
+   if not profession_local_name or profession_local_name == '' then return end
+
+   return "ok", profession_local_name
+end
+
+local function GetValdrakkenProfessionQuestGroupName(objective)
+   local res, profession_name = GetProfessionName(objective)
+end
 
 a_env.PlayerHasProfession = function(objective)
    local profession_skill_line_id = C_TradeSkillUI.GetProfessionSkillLineID(objective.profession)
@@ -27,13 +43,39 @@ local weekly_profession_quest_template = table_merge_shallow_left({ a_env.weekly
 
 -- Enum.Profession.Mining
 a_env.objectives.profession_mining = {}
-a_env.objectives.profession_mining.valdrakken_draconium = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70617, profession = Enum.Profession.Mining } })
-a_env.objectives.profession_mining.valdrakken_serevite = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70618, profession = Enum.Profession.Mining } })
-a_env.objectives.profession_mining.valdrakken_earth = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 72157, profession = Enum.Profession.Mining } })
+local mining_valdrakken = {
+   { draconium = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70617, profession = Enum.Profession.Mining } }) },
+   { serevite = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70618, profession = Enum.Profession.Mining } }) },
+   { earth = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 72157, profession = Enum.Profession.Mining } }) },
+}
+table_add_pairs(a_env.objectives.profession_mining, mining_valdrakken)
+function a_env.OutputTableMiningValdrakken()
+   local output_table = a_env.CalculateObjectivesToOutputTable(pairs_get_vals(mining_valdrakken))
+   local name = "(manual) Mining Valdrakken"
+   output_table.none_active   = { name = name, state = output_table[1].state, period = output_table[1].period }
+   output_table.any_completed = { name = name, state = "completed",           period = output_table[1].period }
+
+   a_env.OutputTableLeaveOnlyActiveQuest(output_table)
+
+   return output_table
+end
 
 a_env.objectives.profession_herbalism = {}
-a_env.objectives.profession_herbalism.valdrakken_saxifrage = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70615, profession = Enum.Profession.Herbalism } })
-a_env.objectives.profession_herbalism.valdrakken_hochenblume = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70616, profession = Enum.Profession.Herbalism } })
+local herbalism_valdrakken = {
+   { saxifrage = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70615, profession = Enum.Profession.Herbalism } }) },
+   { hochenblume = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70616, profession = Enum.Profession.Herbalism } }) },
+}
+table_add_pairs(a_env.objectives.profession_herbalism, herbalism_valdrakken)
+function a_env.OutputTableHerbalismValdrakken()
+   local output_table = a_env.CalculateObjectivesToOutputTable(pairs_get_vals(herbalism_valdrakken))
+   local name = "(manual) Herbalism Valdrakken"
+   output_table.none_active   = { name = name, state = output_table[1].state, period = output_table[1].period }
+   output_table.any_completed = { name = name, state = "completed",           period = output_table[1].period }
+
+   a_env.OutputTableLeaveOnlyActiveQuest(output_table)
+
+   return output_table
+end
 
 a_env.objectives.profession_enchanting = {}
 a_env.objectives.profession_enchanting.valdrakken_bracer_leech = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 72173, profession = Enum.Profession.Enchanting } })
@@ -61,4 +103,5 @@ a_env.objectives.profession_jewelcrafting.loamm_whelkshell = table_merge_shallow
 
 -- Enum.Profession.Inscription
 a_env.objectives.profession_inscription = {}
+a_env.objectives.profession_inscription.valdrakken_explorer_compendium = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70560, profession = Enum.Profession.Inscription } })
 a_env.objectives.profession_inscription.loamm_proclamation = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 75573, profession = Enum.Profession.Inscription } })
