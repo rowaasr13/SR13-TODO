@@ -3,6 +3,7 @@ local a_name, a_env = ...
 local table_merge_shallow_left = _G["SR13-Lib"].table_utils.table_merge_shallow_left
 local table_add_pairs = _G["SR13-Lib"].pair_utils.table_add_pairs
 local pairs_get_vals = _G["SR13-Lib"].pair_utils.pairs_get_vals
+local array_of_pairs_iter = _G["SR13-Lib"].pair_utils.array_of_pairs_iter
 
 local function GetProfessionName(objective)
    local profession_skill_line_id = C_TradeSkillUI.GetProfessionSkillLineID(objective.profession)
@@ -41,40 +42,55 @@ local weekly_profession_quest_template = table_merge_shallow_left({ a_env.weekly
    progress = a_env.GetObjectiveQuestSingleObjectiveProgressString,
 } })
 
--- Enum.Profession.Mining
-a_env.objectives.profession_mining = {}
-local mining_valdrakken = {
-   { draconium = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70617, profession = Enum.Profession.Mining } }) },
-   { serevite = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70618, profession = Enum.Profession.Mining } }) },
-   { earth = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 72157, profession = Enum.Profession.Mining } }) },
+local branch = a_env.objectives.profession
+
+local source_data = {
+   [Enum.Profession.Mining] = {
+      valdrakken_weekly = {
+         { draconium = { quest_id = 70617 } },
+         { serevite = { quest_id = 70618 } },
+         { earth = { quest_id = 72157 } },
+      },
+   },
+   [Enum.Profession.Herbalism] = {
+      valdrakken_weekly = {
+         { saxifrage = { quest_id = 70615 } },
+         { hochenblume = { quest_id = 70616 } },
+      },
+   },
+   [Enum.Profession.Skinning] = {
+      valdrakken_weekly = {
+         { dense_hide = { quest_id = 72158 } },
+      },
+   },
 }
-table_add_pairs(a_env.objectives.profession_mining, mining_valdrakken)
-function a_env.OutputTableMiningValdrakken()
-   local output_table = a_env.CalculateObjectivesToOutputTable(pairs_get_vals(mining_valdrakken))
-   local name = "(manual) Mining Valdrakken"
-   output_table.none_active   = { name = name, state = output_table[1].state, period = output_table[1].period }
-   output_table.any_completed = { name = name, state = "completed",           period = output_table[1].period }
 
-   a_env.OutputTableLeaveOnlyActiveQuest(output_table)
+for profession_enum, profession_quests in pairs(source_data) do
+   local prof_objs_branch = a_env.objectives.profession[profession_enum]
+   if not prof_objs_branch then prof_objs_branch = {} a_env.objectives.profession[profession_enum] = prof_objs_branch end
 
-   return output_table
+   prof_objs_branch.valdrakken_weekly = prof_objs_branch.valdrakken_weekly or {}
+   for idx, key, val in array_of_pairs_iter(profession_quests.valdrakken_weekly) do
+      local merged_data = table_merge_shallow_left({ weekly_profession_quest_template, { profession = profession_enum }, val })
+      prof_objs_branch.valdrakken_weekly[key] = merged_data
+      profession_quests.valdrakken_weekly[idx][key] = merged_data
+   end
 end
 
-a_env.objectives.profession_herbalism = {}
-local herbalism_valdrakken = {
-   { saxifrage = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70615, profession = Enum.Profession.Herbalism } }) },
-   { hochenblume = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70616, profession = Enum.Profession.Herbalism } }) },
-}
-table_add_pairs(a_env.objectives.profession_herbalism, herbalism_valdrakken)
-function a_env.OutputTableHerbalismValdrakken()
-   local output_table = a_env.CalculateObjectivesToOutputTable(pairs_get_vals(herbalism_valdrakken))
-   local name = "(manual) Herbalism Valdrakken"
-   output_table.none_active   = { name = name, state = output_table[1].state, period = output_table[1].period }
-   output_table.any_completed = { name = name, state = "completed",           period = output_table[1].period }
+function a_env.OutputTablesProfessions()
+   local output_tables = {}
+   for profession_enum, profession_objectives in pairs(source_data) do
+      local output_table = a_env.CalculateObjectivesToOutputTable(pairs_get_vals(source_data[profession_enum].valdrakken_weekly))
+      local ok, prof_name = GetProfessionName({ profession = profession_enum })
+      local group_name = ("%s Valdrakken"):format(prof_name or ("prof_enum:" .. profession_enum))
+      output_table.none_active   = { name = group_name, info = group_name, state = output_table[1].state, period = output_table[1].period }
+      output_table.any_completed = { name = group_name, info = group_name, state = "completed",           period = output_table[1].period }
 
-   a_env.OutputTableLeaveOnlyActiveQuest(output_table)
+      a_env.OutputTableLeaveOnlyActiveQuest(output_table)
+      output_tables[#output_tables + 1] = output_table
+   end
 
-   return output_table
+   return output_tables
 end
 
 a_env.objectives.profession_enchanting = {}

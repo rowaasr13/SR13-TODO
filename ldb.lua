@@ -74,8 +74,9 @@ function broker:OnEnter()
 
    tooltip:AddSeparator()
    tooltip:AddHeader("Professions")
-   AddOutputTable(tooltip, a_env.OutputTableMiningValdrakken())
-   AddOutputTable(tooltip, a_env.OutputTableHerbalismValdrakken())
+   for _, output_table  in ipairs(a_env.OutputTablesProfessions()) do
+      AddOutputTable(tooltip, output_table)
+   end
    AddSingleObjectiveLine(tooltip, a_env.objectives.profession_enchanting.valdrakken_bracer_leech)
    AddSingleObjectiveLine(tooltip, a_env.objectives.profession_enchanting.loamm_relic)
    AddSingleObjectiveLine(tooltip, a_env.objectives.profession_tailoring.valdrakken_surveyor_robe)
