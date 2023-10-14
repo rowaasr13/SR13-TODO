@@ -51,30 +51,45 @@ function a_env.CalculateObjectivesToOutputTable(objectives)
 end
 
 -- Works with preprocessed output tables.
--- If any quest is active (pickedup/turnin) then entire table is replaced with this quest.
+-- If one quest is active (pickedup/turnin/completed) then entire table is replaced with only this quest.
 -- If all quest are completed, then entire table is replaced with special output from .all_completed.
--- If none of quest are completed or active, then entire table is replaced with special output from .none_completed.
+-- If none of quest are completed or active, then entire table is replaced with special output from .none_active.
 function a_env.OutputTableLeaveOnlyActiveQuest(output_table)
+   local completed_count = 0
+   -- (bool) all quests in group are completed (often used with random dailies/weeklies when you get one random quest from group)
    local all_completed = true
-   local none_completed = true
+   local none_active = true
+
    for idx = 1, #output_table do
       local objective = output_table[idx]
       if objective.state == "pickedup" or objective.state == "turnin" then
          wipe(output_table)
          output_table[1] = objective
-         return
+         return output_table
+      elseif objective.state == "completed" then
+         completed_count = completed_count + 1
+         none_active = false
+      else
+         all_completed = false
       end
-      if objective.state == "completed" then none_completed = false else all_completed = false end
    end
 
-   if none_completed and output_table.none_completed and #output_table > 0 then
-      local objective = output_table.none_completed
+   if none_active and output_table.none_active and #output_table > 0 then
+      local objective = output_table.none_active
       wipe(output_table)
       output_table[1] = objective
    end
 
+if DEBUG1 then print(one_completed, all_completed, none_active) end
+
    if all_completed and output_table.all_completed and #output_table > 0 then
       local objective = output_table.all_completed
+      wipe(output_table)
+      output_table[1] = objective
+   end
+
+   if completed_count > 0 and output_table.any_completed and #output_table > 0 then
+      local objective = output_table.any_completed
       wipe(output_table)
       output_table[1] = objective
    end

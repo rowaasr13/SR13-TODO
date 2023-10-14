@@ -17,12 +17,13 @@ local valdrakken_accord = {
 table_add_pairs(objectives_branch, valdrakken_accord)
 
 objectives_branch.loamm_niffen = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 75665, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } })
-a_env.objectives.valdrakken_heroic = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 76122, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } }) -- Complete 5 Heroic, Fighting is its own reward
+-- Complete 5 Heroic, Fighting is its own reward, TODO: LOAM NIFFEN AND AIDING THE ACCORD + rep buff MUST BE ACTIVE BEFORE TURNING IN!
+a_env.objectives.valdrakken_heroic = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 76122, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } })
 
 function a_env.OutputTableDragonflightReputation()
    local output_table = a_env.CalculateObjectivesToOutputTable(pairs_get_vals(valdrakken_accord))
    output_table.all_completed = { name = output_table[1].name, state = output_table[1].state, period = output_table[1].period }
-   output_table.none_completed = { name = output_table[1].name, state = output_table[1].state, period = output_table[1].period }
+   output_table.none_active = { name = output_table[1].name, state = output_table[1].state, period = output_table[1].period }
 
    a_env.OutputTableLeaveOnlyActiveQuest(output_table)
 
