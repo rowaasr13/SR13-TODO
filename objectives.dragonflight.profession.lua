@@ -63,31 +63,55 @@ local source_data = {
          { dense_hide = { quest_id = 72158 } },
       },
    },
+   [Enum.Profession.Leatherworking] = {
+      valdrakken_weekly = {
+         { herbalist_basket = { quest_id = 70569 } },
+      },
+      valdrakken_order = { quest_id = 70594 },
+      loamm_weekly = {
+         { mycelium = { quest_id = 75354 } },
+      },
+   },
+}
+
+local one_quest_per_group_weeklies = {
+   { valdrakken_weekly = "Valdrakken" },
+   { loamm_weekly = "Loamm" },
 }
 
 for profession_enum, profession_quests in pairs(source_data) do
    local prof_objs_branch = a_env.objectives.profession[profession_enum]
    if not prof_objs_branch then prof_objs_branch = {} a_env.objectives.profession[profession_enum] = prof_objs_branch end
 
-   prof_objs_branch.valdrakken_weekly = prof_objs_branch.valdrakken_weekly or {}
-   for idx, key, val in array_of_pairs_iter(profession_quests.valdrakken_weekly) do
-      local merged_data = table_merge_shallow_left({ weekly_profession_quest_template, { profession = profession_enum }, val })
-      prof_objs_branch.valdrakken_weekly[key] = merged_data
-      profession_quests.valdrakken_weekly[idx][key] = merged_data
+   for idx, group_key, group_name in array_of_pairs_iter(one_quest_per_group_weeklies) do
+      if profession_quests[group_key] then
+         prof_objs_branch[group_key] = prof_objs_branch[group_key] or {}
+         for idx, key, val in array_of_pairs_iter(profession_quests[group_key]) do
+            local merged_data = table_merge_shallow_left({ weekly_profession_quest_template, { profession = profession_enum }, val })
+            prof_objs_branch[group_key][key] = merged_data
+            profession_quests[group_key][idx][key] = merged_data
+         end
+      end
    end
 end
 
 function a_env.OutputTablesProfessions()
    local output_tables = {}
    for profession_enum, profession_objectives in pairs(source_data) do
-      local output_table = a_env.CalculateObjectivesToOutputTable(pairs_get_vals(source_data[profession_enum].valdrakken_weekly))
-      local ok, prof_name = GetProfessionName({ profession = profession_enum })
-      local group_name = ("%s Valdrakken"):format(prof_name or ("prof_enum:" .. profession_enum))
-      output_table.none_active   = { name = group_name, info = group_name, state = output_table[1].state, period = output_table[1].period }
-      output_table.any_completed = { name = group_name, info = group_name, state = "completed",           period = output_table[1].period }
+      for idx, group_key, group_name in array_of_pairs_iter(one_quest_per_group_weeklies) do
+         if profession_objectives[group_key] then
 
-      a_env.OutputTableLeaveOnlyActiveQuest(output_table)
-      output_tables[#output_tables + 1] = output_table
+            local output_table = a_env.CalculateObjectivesToOutputTable(pairs_get_vals(source_data[profession_enum][group_key]))
+            local ok, prof_name = GetProfessionName({ profession = profession_enum })
+            local group_name = ("%s %s"):format((prof_name or ("prof_enum:" .. profession_enum)), group_name)
+            for idx = 1, #output_table do output_table[idx].info = group_name  end
+            output_table.none_active   = { name = group_name, info = group_name, state = output_table[1].state, period = output_table[1].period }
+            output_table.any_completed = { name = group_name, info = group_name, state = "completed",           period = output_table[1].period }
+
+            a_env.OutputTableLeaveOnlyActiveQuest(output_table)
+            output_tables[#output_tables + 1] = output_table
+         end
+      end
    end
 
    return output_tables
