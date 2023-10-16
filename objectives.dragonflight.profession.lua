@@ -67,10 +67,24 @@ local source_data = {
       valdrakken_weekly = {
          { herbalist_basket = { quest_id = 70569 } },
       },
-      valdrakken_order = { quest_id = 70594 },
+      valdrakken_orders = { quest_id = 70594 },
       loamm_weekly = {
          { mycelium = { quest_id = 75354 } },
       },
+   },
+   [Enum.Profession.Alchemy] = {
+      valdrakken_weekly = {
+         { reclaim = { quest_id = 70530 } },
+         { mana_potion = { quest_id = 70531 } },
+         { healing_potion = { quest_id = 70532 } },
+      },
+   },
+   [Enum.Profession.Tailoring] = {
+      valdrakken_weekly = {
+         { surveyor_robe = { quest_id = 70572 } },
+         { simple_reagent_bag = { quest_id = 70587 } },
+      },
+      valdrakken_orders = { quest_id = 70595 },
    },
 }
 
@@ -92,6 +106,7 @@ for profession_enum, profession_quests in pairs(source_data) do
             profession_quests[group_key][idx][key] = merged_data
          end
       end
+      -- ORDER: if profession_quests
    end
 end
 
@@ -112,6 +127,7 @@ function a_env.OutputTablesProfessions()
             output_tables[#output_tables + 1] = output_table
          end
       end
+      -- ORDER: if profession_objectives
    end
 
    return output_tables
@@ -125,16 +141,6 @@ a_env.objectives.profession_blacksmithing = {}
 a_env.objectives.profession_blacksmithing.valdrakken_explorer_boots = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70211, profession = Enum.Profession.Blacksmithing } })
 a_env.objectives.profession_blacksmithing.loamm_plate = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 75569, profession = Enum.Profession.Blacksmithing } })
 a_env.objectives.profession_blacksmithing.orders = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70589, profession = Enum.Profession.Blacksmithing } })
-
-a_env.objectives.profession_tailoring = {}
-a_env.objectives.profession_tailoring.valdrakken_surveyor_robe = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70572, profession = Enum.Profession.Tailoring } })
-a_env.objectives.profession_tailoring.valdrakken_simple_reagent_bag = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70587, profession = Enum.Profession.Tailoring } })
-a_env.objectives.profession_tailoring.valdrakken_orders = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 70595, profession = Enum.Profession.Tailoring } })
-
-a_env.objectives.profession_alchemy = {}
-a_env.objectives.profession_alchemy.valdrakken_reclaim = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70530 } })
-a_env.objectives.profession_alchemy.valdrakken_mana_potion = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70531 } })
-a_env.objectives.profession_alchemy.valdrakken_healing_potion = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70532 } })
 
 a_env.objectives.profession.valdrakken_mettle = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70221 } })
 
