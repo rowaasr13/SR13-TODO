@@ -10,6 +10,7 @@ local valdrakken_accord = {
    { valdrakken_noevent = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 70750 } }) },
    { valdrakken_dragonbane = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72374 } }) },
    { valdrakken_zskera = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 75259 } }) },
+   { valdrakken_sniffenseeking = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 75859 } }) },
    { valdrakken_researchers = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 75860 } }) },
    { valdrakken_dreamsurge = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 77976 } }) },
 }
