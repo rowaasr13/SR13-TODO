@@ -77,13 +77,6 @@ function broker:OnEnter()
    for _, output_table  in ipairs(a_env.OutputTablesProfessions()) do
       AddOutputTable(tooltip, output_table)
    end
-   AddSingleObjectiveLine(tooltip, a_env.objectives.profession_enchanting.valdrakken_bracer_leech)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.profession_enchanting.loamm_relic)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.profession_blacksmithing.valdrakken_explorer_boots)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.profession_blacksmithing.loamm_plate)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.profession_blacksmithing.orders)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.profession_jewelcrafting.loamm_whelkshell)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.profession_inscription.loamm_proclamation)
    AddSingleObjectiveLine(tooltip, a_env.objectives.profession.valdrakken_mettle)
 
    tooltip:SmartAnchorTo(self)
