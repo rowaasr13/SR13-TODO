@@ -94,6 +94,13 @@ local source_data = {
       loamm_weekly = {
          { mycelium = { quest_id = 75354 } },
       },
+      item_weekly = {
+         { loot_1 = { quest_id = 66384, item_id = 193910, loot_source = "Treasures", name = GetObjectiveProfessionLootName, state = GetObjectiveProfessionLootProgress } },
+         { loot_2 = { quest_id = 66385, item_id = 193913, loot_source = "Treasures", name = GetObjectiveProfessionLootName, state = GetObjectiveProfessionLootProgress } },
+         { loot_3 = { quest_id = 70522, item_id = 198975, loot_source = "Proto-dragons", name = GetObjectiveProfessionLootName, state = GetObjectiveProfessionLootProgress } },
+         { loot_4 = { quest_id = 70523, item_id = 198976, loot_source = "Slyvern/Vorquin", name = GetObjectiveProfessionLootName, state = GetObjectiveProfessionLootProgress } },
+         --{ treatise =   { quest_id = 74113, name = GetNameFromQuestID, info = "Treatise" } },
+      },
    },
    [Enum.Profession.Alchemy] = {
       valdrakken_weekly = {
