@@ -19,5 +19,4 @@ objectives.dragonflight.profession.lua
 objectives.timewalking.lua
 
 objectives.event.brewfest.lua
-
-
+objectives.event.hallowsend.lua
