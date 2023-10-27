@@ -80,8 +80,6 @@ function a_env.OutputTableLeaveOnlyActiveQuest(output_table)
       output_table[1] = objective
    end
 
-if DEBUG1 then print(one_completed, all_completed, none_active) end
-
    if all_completed and output_table.all_completed and #output_table > 0 then
       local objective = output_table.all_completed
       wipe(output_table)
@@ -97,6 +95,19 @@ end
 
 function a_env.GetObjectiveQuestName(objective)
    return "cachenonnil", QuestUtils_GetQuestName(objective.quest_id)
+end
+
+function a_env.GetObjectiveQuestNameAnd1stObjective(objective)
+   local _, quest_name = a_env.GetObjectiveQuestName(objective)
+   if not quest_name then return end
+
+   -- TODO: get from QUEST LOG so we don't have to wait for info to load
+   local quest_1st_objective = GetQuestObjectiveInfo(objective.quest_id, 1, false)
+   quest_1st_objective = quest_1st_objective:gsub("^%d+/%d+%s+", "")
+   if (not quest_1st_objective) or (quest_1st_objective == "") then return "ok", quest_name end
+
+   quest_name = ("%s (%s)"):format(quest_name, quest_1st_objective)
+   return "cachenonnil", quest_name
 end
 
 function a_env.GetObjectiveQuestCompleted(objective)
@@ -132,10 +143,12 @@ a_env.state_colors = {
    ["completed"] = GREEN_FONT_COLOR,
    ["pickedup"] = YELLOW_FONT_COLOR,
    ["turnin"] = YELLOW_FONT_COLOR,
+   ["inbags"] = YELLOW_FONT_COLOR,
 }
 
 a_env.state_display_text = {
    ["pickedup"] = "picked up",
    ["turnin"] = "turn-in",
    ["notpickedup"] = "not picked up",
+   ["inbags"] = "still in bags"
 }

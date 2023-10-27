@@ -15,10 +15,6 @@ local function GetProfessionName(objective)
    return "ok", profession_local_name
 end
 
-local function GetValdrakkenProfessionQuestGroupName(objective)
-   local res, profession_name = GetProfessionName(objective)
-end
-
 a_env.PlayerHasProfession = function(objective)
    local profession_skill_line_id = C_TradeSkillUI.GetProfessionSkillLineID(objective.profession)
    if not profession_skill_line_id then return end
@@ -41,10 +37,33 @@ local function GetNameFromQuestID(objective)
    return "ok", "quest id#" .. objective.quest_id
 end
 
+local function GetNameFromItemID(objective)
+   local name = GetItemInfo(objective.item_id)
+   return "cachenonnil", name
+end
+
 local weekly_profession_quest_template = table_merge_shallow_left({ a_env.weekly_quest_template, {
    available = a_env.PlayerHasProfession,
    progress = a_env.GetObjectiveQuestSingleObjectiveProgressString,
 } })
+
+local function GetObjectiveProfessionLootName(objective)
+   local item_name = a_env.GetLazy(objective, GetNameFromItemID)
+   local loot_objecitve_name = ("%s (%s)"):format((item_name or ""), objective.loot_source)
+   local cache_mode = item_name and "cachenonnil" or "ok"
+   return cache_mode, loot_objecitve_name
+end
+
+local function GetObjectiveProfessionLootProgress(ojective)
+   local state = a_env.GetLazy(ojective, a_env.GetObjectiveStateDefault)
+   if state == "completed" then
+      local in_inventory = GetItemCount(ojective.item_id, true, true, true)
+      if in_inventory > 0 then
+         state = "inbags"
+      end
+   end
+   return "ok", state
+end
 
 local branch = a_env.objectives.profession
 
