@@ -43,16 +43,22 @@ local function AddSingleLineFromOutputTable(tooltip, line)
    local uncolored_state_text = progress or a_env.state_display_text[state] or state
    if state_color then state_text = state_color:WrapTextInColorCode(uncolored_state_text) else state_text = uncolored_state_text end
    local method = line.header and "AddHeader" or "AddLine"
-   tooltip:AddLine(name, state_text, info, period)
+   tooltip[method](tooltip, name, state_text, info, period)
 end
 
 local function AddOutputTable(tooltip, output_table)
    assert(tooltip, ("tooltip is %q"):format(tostring(tooltip)))
    assert(output_table, ("output_table is %q"):format(tostring(output_table)))
 
+   local line = output_table.header
+   if line then
+      tooltip:AddSeparator()
+      AddSingleLineFromOutputTable(tooltip, line)
+   end
+
    for idx = 1, #output_table do
-      local objective = output_table[idx]
-      AddSingleLineFromOutputTable(tooltip, objective)
+      local line = output_table[idx]
+      AddSingleLineFromOutputTable(tooltip, line)
    end
 end
 
