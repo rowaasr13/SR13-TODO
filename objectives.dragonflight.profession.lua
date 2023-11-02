@@ -242,6 +242,7 @@ local function array_of_pairs_table_merge_shallow_left(array_of_pairs, in_array_
    return out_array_of_pairs
 end
 
+local function BuildObjectivesProfessionsOld()
 for profession_enum, profession_quests in pairs(source_data) do
    local prof_objs_branch = a_env.objectives.profession[profession_enum]
    if not prof_objs_branch then prof_objs_branch = {} a_env.objectives.profession[profession_enum] = prof_objs_branch end
@@ -262,6 +263,8 @@ for profession_enum, profession_quests in pairs(source_data) do
       end
    end
 end
+end
+BuildObjectivesProfessionsOld()
 
 function a_env.OutputTablesProfessions()
    local output_tables = {}
