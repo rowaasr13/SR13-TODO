@@ -152,7 +152,6 @@ local source_data = {
       }
       -- niffen_proclamation = table_merge_shallow_left({ weekly_profession_quest_template, { quest_id = 75573, profession = Enum.Profession.Inscription } })
     -- {name="Disturbed Dirt or Expedition Scout's Pack (Inscription)", quests={66375, 66376}, optionKey="inscription", skillID=773},
-    -- {name="Curious Djaradin Rune - Djaradin Enemies (Inscription)", quests={70518}, optionKey="inscription", skillID=773},
     -- {name="Draconic Treatise (Inscription)", quests={74105}, optionKey="inscription", skillID=773},
     -- {name="Valdrakken Profession Quests (Inscription)", quests={66943, 66944, 70559, 70561, 70558, 70560, 66945, 72438}, optionKey="inscription", skillID=773, useWorldState=true},
     -- {name="Crafting Order Quest (Inscription)", quests={70592}, optionKey="inscription", skillID=773},
