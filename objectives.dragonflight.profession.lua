@@ -67,6 +67,14 @@ end
 
 local branch = a_env.objectives.profession
 
+-- Defines both templates for each group of quests AND their order in display
+local templates = {
+   { valdrakken_weekly = table_merge_shallow_left({ weekly_profession_quest_template, { name = a_env.GetObjectiveQuestNameAnd1stObjective } }) },
+   { factions_weekly   = weekly_profession_quest_template },
+   { item_weekly       = table_merge_shallow_left({ weekly_profession_quest_template, { name = GetObjectiveProfessionLootName, state = GetObjectiveProfessionLootProgress } }) },
+   { valdrakken_orders = weekly_profession_quest_template },
+}
+
 local source_data = {
    [Enum.Profession.Mining] = {
       valdrakken_weekly = {
@@ -241,29 +249,28 @@ local function array_of_pairs_table_merge_shallow_left(array_of_pairs, in_array_
    return out_array_of_pairs
 end
 
-local function BuildObjectivesProfessionsOld()
-for profession_enum, profession_quests in pairs(source_data) do
-   local prof_objs_branch = a_env.objectives.profession[profession_enum]
-   if not prof_objs_branch then prof_objs_branch = {} a_env.objectives.profession[profession_enum] = prof_objs_branch end
 
-   for idx, group_key, group_name in array_of_pairs_iter(one_quest_per_group_weeklies) do
-      if profession_quests[group_key] then
-         prof_objs_branch[group_key] = prof_objs_branch[group_key] or {}
-         for idx, key, val in array_of_pairs_iter(profession_quests[group_key]) do
-            local merged_data = table_merge_shallow_left({ weekly_profession_quest_template, { profession = profession_enum }, val })
-            prof_objs_branch[group_key][key] = merged_data
-            profession_quests[group_key][idx][key] = merged_data
-         end
-      end
-      -- ORDER: if profession_quests
-      local add_array_of_pairs = source_data[profession_enum].item_weekly
-      if add_array_of_pairs then
-         source_data[profession_enum].item_weekly = array_of_pairs_table_merge_shallow_left(source_data[profession_enum].item_weekly, { weekly_profession_quest_template, { profession = profession_enum } })
+local function BuildObjectivesProfessions()
+   local orderer_profession_enums = {}
+   for key in pairs(source_data) do orderer_profession_enums[#orderer_profession_enums + 1] = key end
+   table.sort(orderer_profession_enums)
+
+   for _, profession_enum in ipairs(orderer_profession_enums) do
+      local profession_data = source_data[profession_enum]
+      for template_idx, template_key, template_data in array_of_pairs_iter(templates) do
+         if profession_data[template_key] then
+            for objective_idx, objective_key, objective_data in array_of_pairs_iter(profession_data[template_key]) do
+               local merged_data = table_merge_shallow_left({ template_data, { profession = profession_enum }, objective_data })
+               local objective_id = table.concat({ "profession", profession_enum, template_key, objective_key }, ",")
+               merged_data.debug_id = objective_id
+               profession_data[template_key][objective_idx][objective_key] = merged_data
+               a_env.objectives[objective_id] = merged_data
+            end
       end
    end
 end
 end
-BuildObjectivesProfessionsOld()
+BuildObjectivesProfessions()
 
 function a_env.OutputTablesProfessions()
    local output_tables = {}
