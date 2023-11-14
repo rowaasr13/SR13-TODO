@@ -14,7 +14,11 @@ function a_env.GetLazy(tbl, key)
 
    local key_is_func
    if val == nil then
-      if type(key) == "function" then key_is_func = true else assert(false, ("value for key %q is nil"):format(key)) end
+      if type(key) == "function" then key_is_func = true else
+         local debug_id_msg = tbl.debug_id and (" (debug_id: %s)"):format(tbl.debug_id) or ''
+         DevTools_Dump(tbl)
+         assert(false, ("value for key %q is nil%s"):format(key, debug_id_msg))
+      end
    end
 
    local res
