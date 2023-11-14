@@ -12,7 +12,7 @@ local function GetProfessionName(objective)
    local profession_local_name = C_TradeSkillUI.GetTradeSkillDisplayName(profession_skill_line_id)
    if not profession_local_name or profession_local_name == '' then return end
 
-   return "ok", profession_local_name
+   return "cachenonempty", profession_local_name
 end
 
 a_env.PlayerHasProfession = function(objective)
@@ -20,7 +20,7 @@ a_env.PlayerHasProfession = function(objective)
    if not profession_skill_line_id then return end
 
    local profession_local_name = C_TradeSkillUI.GetTradeSkillDisplayName(profession_skill_line_id)
-   if not profession_local_name or profession_local_name == '' then return end
+   if (not profession_local_name) or profession_local_name == '' then return end
 
    local prof1, prof2 = GetProfessions()
    if prof1 then
