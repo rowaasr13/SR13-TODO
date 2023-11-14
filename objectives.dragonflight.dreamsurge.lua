@@ -1,29 +1,23 @@
 local a_name, a_env = ...
 
+local table_merge_shallow_left = _G["SR13-Lib"].table_utils.table_merge_shallow_left
+
 -- LEVEL70
 
 a_env.objectives.dreamsurge = {}
-a_env.objectives.dreamsurge.investigation = {
+a_env.objectives.dreamsurge.investigation = table_merge_shallow_left({ a_env.weekly_quest_template, {
    quest_id = 77414,
-   name = a_env.GetObjectiveQuestName,
    info = ("one-time, random %s Veteran"):format(EPIC_PURPLE_COLOR:WrapTextInColorCode(402)),
-   state = a_env.GetObjectiveStateDefault,
    expansion = 111, -- Enum.Dragonflight
    season = 2000,
    available = function(self) return not a_env.GetLazy(self, 'completed') end,
-   pickedup = a_env.GetObjectiveQuestPickedup,
-   completed = a_env.GetObjectiveQuestCompleted,
-}
+}})
 
-a_env.objectives.dreamsurge.shaping = {
+a_env.objectives.dreamsurge.shaping = table_merge_shallow_left({ a_env.weekly_quest_template, {
    quest_id = 77251,
-   name = a_env.GetObjectiveQuestName,
    info = ("select %s Champion"):format(EPIC_PURPLE_COLOR:WrapTextInColorCode(415)),
-   state = a_env.GetObjectiveStateDefault,
    progress = a_env.GetObjectiveQuestSingleObjectiveProgressString,
    expansion = 111, -- Enum.Dragonflight
    season = 2000,
    available = true, -- Check if have expansion + maxlevel
-   pickedup = a_env.GetObjectiveQuestPickedup,
-   completed = a_env.GetObjectiveQuestCompleted,
-}
+}})
