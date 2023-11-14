@@ -5,35 +5,21 @@ local table_add_pairs = _G["SR13-Lib"].pair_utils.table_add_pairs
 local pairs_get_vals = _G["SR13-Lib"].pair_utils.pairs_get_vals
 local array_of_pairs_iter = _G["SR13-Lib"].pair_utils.array_of_pairs_iter
 
-local function GetLFGRandomDungeonInfoByDungeonId(required_dungeon_id) -- only returns info for dungeons available to player
-   for idx = 1, GetNumRandomDungeons() do
-      local id, name = GetLFGRandomDungeonInfo(idx)
-      if id == required_dungeon_id then
-         return id, name, IsLFGDungeonJoinable(id)
-      end
-   end
-end
-
-local function GetObjectiveLFGRandomDungeonName(self)
-   local id, name, joinable = GetLFGRandomDungeonInfoByDungeonId(self.lfg_dungeon_id)
-   return "ok", name
-end
-
-local function GetObjectiveLFGRandomDungeonAvailable(self)
-   local id, name, joinable = GetLFGRandomDungeonInfoByDungeonId(self.lfg_dungeon_id)
+local function GetObjectiveTimewalkingDungeonAvailable(self)
+   local id, name, joinable = a_env.GetLFGRandomDungeonInfoByDungeonId(self.lfg_dungeon_id)
    if joinable then return "ok", "IsLFGDungeonJoinable" end
    if C_UnitAuras.GetPlayerAuraBySpellID(self.aura_spell_id) then return "ok", "GetPlayerAuraBySpellID" end
 end
 
 
 local timewalking_quest_template = table_merge_shallow_left({ a_env.weekly_quest_template, {
-   name = GetObjectiveLFGRandomDungeonName,
-   available = GetObjectiveLFGRandomDungeonAvailable,
+   name = a_env.GetObjectiveLFGRandomDungeonName,
+   available = GetObjectiveTimewalkingDungeonAvailable,
    progress = a_env.GetObjectiveQuestSingleObjectiveProgressString,
 } })
 
 local timewalking_token_turnin_quest_template = table_merge_shallow_left({ a_env.weekly_quest_template, {
-   available = GetObjectiveLFGRandomDungeonAvailable,
+   available = GetObjectiveTimewalkingDungeonAvailable,
 } })
 
 -- a_env.objectives.weekly_sign.timewalking_cataclysm = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72810, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } })
