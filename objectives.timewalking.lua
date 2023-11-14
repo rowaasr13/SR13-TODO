@@ -32,6 +32,8 @@ local timewalking_token_turnin_quest_template = table_merge_shallow_left({ a_env
 
 local timewalking = {
    { lichking = { quest_id = 72726, lfg_dungeon_id =  995, aura_spell_id = 335149, item_turn_in_item_id = 129928, item_turn_in_quest_id = 40173 } },
+   { pandaria = { quest_id = 72725, lfg_dungeon_id = 1453, aura_spell_id = 335151, item_turn_in_item_id = 143776, item_turn_in_quest_id = 45563 } },
+   { wod      = { quest_id = 72724, lfg_dungeon_id = 1971, aura_spell_id = 335152, item_turn_in_item_id = 167922, item_turn_in_quest_id = 55499 } },
    { legion   = { quest_id = 72719, lfg_dungeon_id = 2274, aura_spell_id = 359082, item_turn_in_item_id = 187611, item_turn_in_quest_id = 64710 } },
 }
 
