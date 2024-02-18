@@ -55,42 +55,53 @@ end
 -- If all quest are completed, then entire table is replaced with special output from .all_completed.
 -- If none of quest are completed or active, then entire table is replaced with special output from .none_active.
 function a_env.OutputTableLeaveOnlyActiveQuest(output_table)
+   if #output_table == 0 then return end
+
    local completed_count = 0
    -- (bool) all quests in group are completed (often used with random dailies/weeklies when you get one random quest from group)
-   local all_completed = true
-   local none_active = true
+   local active_objective
 
    for idx = 1, #output_table do
       local objective = output_table[idx]
-      if objective.state == "pickedup" or objective.state == "turnin" then
-         wipe(output_table)
-         output_table[1] = objective
-         return output_table
-      elseif objective.state == "completed" then
-         completed_count = completed_count + 1
-         none_active = false
-      else
-         all_completed = false
+      if objective.state == "pickedup" or objective.state == "turnin" or objective.state == "completed" then
+         active_objective = objective
+         if objective.state == "completed" then
+            completed_count = completed_count + 1
+         end
       end
    end
 
-   if none_active and output_table.none_active and #output_table > 0 then
+   if (not active_objective) and output_table.none_active then
+      if output_table.debug == true then print(output_table, "none_active") end
       local objective = output_table.none_active
       wipe(output_table)
       output_table[1] = objective
+      return output_table
    end
 
-   if all_completed and output_table.all_completed and #output_table > 0 then
+   if (completed_count == #output_table) and output_table.all_completed then
+      if output_table.debug == true then print(output_table, "all_completed") end
       local objective = output_table.all_completed
       wipe(output_table)
       output_table[1] = objective
+      return output_table
    end
 
-   if completed_count > 0 and output_table.any_completed and #output_table > 0 then
+   if (completed_count >= 1) and output_table.any_completed then
+      if output_table.debug == true then print(output_table, "any_completed") end
       local objective = output_table.any_completed
       wipe(output_table)
       output_table[1] = objective
+      return output_table
    end
+
+   if active_objective then
+      if output_table.debug == true then print(output_table, "active_objective") end
+      wipe(output_table)
+      output_table[1] = active_objective
+   end
+
+   return output_table
 end
 
 function a_env.GetObjectiveQuestName(objective)
