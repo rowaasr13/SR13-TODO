@@ -62,31 +62,51 @@ local function AddOutputTable(tooltip, output_table)
    end
 end
 
-function broker:OnEnter()
-   tooltip = qtip:Acquire(a_name, 4, "LEFT", "CENTER", "LEFT", "CENTER")
-   tooltip:AddHeader("Objective", "State", "Info", "Period")
-   tooltip:AddSeparator()
+local function AddOutputTables(tooltip, output_tables)
+   for idx = 1, #output_tables do
+      AddOutputTable(tooltip, output_tables[idx])
+   end
+end
+
+local function DoNothing() end
+
+function broker:OnEnter(args)
+   local AddSingleObjectiveLine = AddSingleObjectiveLine
+   local AddOutputTable = AddOutputTable
+   local AddOutputTables = AddOutputTables
+
+   if args and args.show == false then
+      AddSingleObjectiveLine = DoNothing
+      AddOutputTable = DoNothing
+      AddOutputTables = DoNothing
+   else
+      tooltip = qtip:Acquire(a_name, 4, "LEFT", "CENTER", "LEFT", "CENTER")
+      tooltip:AddHeader("Objective", "State", "Info", "Period")
+      tooltip:AddSeparator()
+   end
 
    AddSingleObjectiveLine(tooltip, a_env.objectives.valdrakken_heroic)
-   -- AddSingleObjectiveLine(tooltip, a_env.objectives.weekly_sign.world_quests)
+   AddOutputTable(tooltip, a_env.OutputTableWeeklySign())
    AddOutputTable(tooltip, a_env.OutputTableTimewalking())
-   -- AddSingleObjectiveLine(tooltip, a_env.objectives.darkmoon_faire.ears)
+   AddSingleObjectiveLine(tooltip, a_env.objectives.darkmoon_faire.ears)
 
-   AddOutputTable(tooltip, a_env.OutputTableDragonflightReputation())
-   AddSingleObjectiveLine(tooltip, a_env.objectives.reputation.loamm_niffen)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.worldboss.zaqali_elders)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.dreamsurge.investigation)
-   AddSingleObjectiveLine(tooltip, a_env.objectives.dreamsurge.shaping)
+   AddOutputTables(tooltip, a_env.OutputTableDragonflightReputations())
+   AddOutputTables(tooltip, a_env.OutputTableDragonflightWorldBosses())
+   AddOutputTables(tooltip, a_env.OutputTableDragonflightEvents())
 
-   tooltip:AddSeparator()
-   tooltip:AddHeader("Professions")
-   for _, output_table  in ipairs(a_env.OutputTablesProfessions()) do
-      AddOutputTable(tooltip, output_table)
-   end
+   AddOutputTables(tooltip, a_env.OutputTablesProfessions())
    AddSingleObjectiveLine(tooltip, a_env.objectives.profession.valdrakken_mettle)
 
-   tooltip:SmartAnchorTo(self)
-   tooltip:Show()
+   AddOutputTable(tooltip, a_env.OutputTableHallowsEnd())
+   AddOutputTable(tooltip, a_env.OutputTableWinterVeil())
+   AddOutputTables(tooltip, a_env.OutputTablesLove())
+
+   if args and args.show == false then
+      -- do nothing
+   else
+      tooltip:SmartAnchorTo(self)
+      tooltip:Show()
+   end
 end
 
 function broker:OnLeave()
@@ -94,3 +114,9 @@ function broker:OnLeave()
    tooltip = nil
 end
 
+local function AllOutputTables()
+   broker:OnEnter({ show = false })
+end
+for _, timer in ipairs({ 1, 2, 5, 10, 30 }) do
+   C_Timer.After(timer, AllOutputTables) -- Trigger to pre-load data
+end
