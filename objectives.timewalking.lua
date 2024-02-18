@@ -11,7 +11,6 @@ local function GetObjectiveTimewalkingDungeonAvailable(self)
    if C_UnitAuras.GetPlayerAuraBySpellID(self.aura_spell_id) then return "ok", "GetPlayerAuraBySpellID" end
 end
 
-
 local timewalking_quest_template = table_merge_shallow_left({ a_env.weekly_quest_template, {
    name = a_env.GetObjectiveLFGRandomDungeonName,
    available = GetObjectiveTimewalkingDungeonAvailable,
@@ -22,19 +21,13 @@ local timewalking_token_turnin_quest_template = table_merge_shallow_left({ a_env
    available = GetObjectiveTimewalkingDungeonAvailable,
 } })
 
--- a_env.objectives.weekly_sign.timewalking_cataclysm = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72810, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } })
--- a_env.objectives.weekly_sign.timewalking_cataclysm_token = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 40786 } }) -- add: item in inventory, item in inventory+no event - throw away
--- a_env.objectives.weekly_sign.timewalking_burning_crusade = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 72727, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } })
--- a_env.objectives.weekly_sign.timewalking_burning_crusade_token = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 40168 } }) -- add: item in inventory, item in inventory+no event - throw away
--- local timewalking_legion = { quest_id = 72719, lfg_dungeon_id = 2274, aura_spell_id = 359082, item_turn_in_item_id = 187611, item_turn_in_quest_id = 64710 }
--- local timewalking_legion = { quest_id = 72719, lfg_dungeon_id = 2274, aura_spell_id = 359082, item_turn_in_item_id = 187611, item_turn_in_quest_id = 64710 }
--- a_env.objectives.weekly_sign.timewalking_legion = table_merge_shallow_left({timewalking_quest_template, timewalking_legion })
-
 local timewalking = {
-   { lichking = { quest_id = 72726, lfg_dungeon_id =  995, aura_spell_id = 335149, item_turn_in_item_id = 129928, item_turn_in_quest_id = 40173 } },
-   { pandaria = { quest_id = 72725, lfg_dungeon_id = 1453, aura_spell_id = 335151, item_turn_in_item_id = 143776, item_turn_in_quest_id = 45563 } },
-   { wod      = { quest_id = 72724, lfg_dungeon_id = 1971, aura_spell_id = 335152, item_turn_in_item_id = 167922, item_turn_in_quest_id = 55499 } },
-   { legion   = { quest_id = 72719, lfg_dungeon_id = 2274, aura_spell_id = 359082, item_turn_in_item_id = 187611, item_turn_in_quest_id = 64710 } },
+   { burning_crusade = { quest_id = 72727, lfg_dungeon_id =  744, aura_spell_id = 335148, item_turn_in_item_id = 129747, item_turn_in_quest_id = 40168 } },
+   { lichking        = { quest_id = 72726, lfg_dungeon_id =  995, aura_spell_id = 335149, item_turn_in_item_id = 129928, item_turn_in_quest_id = 40173 } },
+   { cataclysm       = { quest_id = 72810, lfg_dungeon_id = 1146, aura_spell_id = 335150, item_turn_in_item_id = 133377, item_turn_in_quest_id = 40786 } },
+   { pandaria        = { quest_id = 72725, lfg_dungeon_id = 1453, aura_spell_id = 335151, item_turn_in_item_id = 143776, item_turn_in_quest_id = 45563 } },
+   { wod             = { quest_id = 72724, lfg_dungeon_id = 1971, aura_spell_id = 335152, item_turn_in_item_id = 167922, item_turn_in_quest_id = 55499 } },
+   { legion          = { quest_id = 72719, lfg_dungeon_id = 2274, aura_spell_id = 359082, item_turn_in_item_id = 187611, item_turn_in_quest_id = 64710 } },
 }
 
 local branch = {}
