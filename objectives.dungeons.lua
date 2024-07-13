@@ -57,3 +57,5 @@ a_env.objectives.event_brewfest = a_env.objectives.event_brewfest or {}
 a_env.objectives.event_brewfest.dungeon_coren = table_merge_shallow_left({ event_dungeon_objective_template, { lfg_dungeon_id = 287 } })
 a_env.objectives.event_hallowsend = a_env.objectives.event_hallowsend or {}
 a_env.objectives.event_hallowsend.dungeon_headless_horseman = table_merge_shallow_left({ event_dungeon_objective_template, { lfg_dungeon_id = 285 } })
+a_env.objectives.event_love = a_env.objectives.event_love or {}
+a_env.objectives.event_love.crown_chemical_co = table_merge_shallow_left({ event_dungeon_objective_template, { lfg_dungeon_id = 288 } })
