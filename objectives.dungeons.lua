@@ -25,13 +25,33 @@ function a_env.GetObjectiveLFGRandomFirstRewardCompleted(self)
    if doneToday then return "ok", true end
 end
 
+local lfg_mode_any_queued = {
+   queued    = true,
+   rolecheck = true,
+   proposal  = true,
+   suspended = true,
+   lfgparty  = true,
+}
+function a_env.GetObjectiveLFGRandomDungeonState(self)
+   local default_state = a_env.GetLazy(self, a_env.GetObjectiveStateDefault)
+   -- if it's anything but "available" - return as-is...
+   if default_state ~= "available" then return "ok", default_state end
+   -- ...otherwise continue and enrich with queue data
+
+   local mode, sub_mode = GetLFGMode(LE_LFG_CATEGORY_RF, self.lfg_dungeon_id)
+   if lfg_mode_any_queued[mode] then return "ok", "queued" end
+
+   return "ok", default_state
+end
+
 local event_dungeon_objective_template = {
    name = a_env.GetObjectiveLFGRandomDungeonName,
-   state = a_env.GetObjectiveStateDefault,
+   state = a_env.GetObjectiveLFGRandomDungeonState,
    available = a_env.GetObjectiveLFGRandomDungeonAvailable,
    completed = a_env.GetObjectiveLFGRandomFirstRewardCompleted,
    period = "daily dungeon",
 }
+a_env.event_dungeon_objective_template = event_dungeon_objective_template
 
 a_env.objectives.event_brewfest = a_env.objectives.event_brewfest or {}
 a_env.objectives.event_brewfest.dungeon_coren = table_merge_shallow_left({ event_dungeon_objective_template, { lfg_dungeon_id = 287 } })

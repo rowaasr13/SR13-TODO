@@ -155,6 +155,7 @@ a_env.state_colors = {
    ["pickedup"] = YELLOW_FONT_COLOR,
    ["turnin"] = YELLOW_FONT_COLOR,
    ["inbags"] = YELLOW_FONT_COLOR,
+   ["queued"] = YELLOW_FONT_COLOR,
 }
 
 a_env.state_display_text = {
