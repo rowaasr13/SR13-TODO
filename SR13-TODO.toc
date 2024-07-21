@@ -9,6 +9,7 @@ ldb.lua
 
 objectives.lua
 objectives.dungeons.lua
+objectives.items.lua
 
 objectives.unsorted.lua
 
