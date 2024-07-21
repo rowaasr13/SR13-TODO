@@ -22,3 +22,5 @@ objectives.timewalking.lua
 objectives.event.brewfest.lua
 objectives.event.hallowsend.lua
 objectives.event.love.lua
+
+objectives.event.remix.pandaria.lua
