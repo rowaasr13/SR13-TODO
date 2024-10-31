@@ -138,17 +138,6 @@ function a_env.GetObjectiveQuestSingleObjectiveProgressString(objective)
    if fulfilled and required then return "ok", fulfilled .. '/' .. required end
 end
 
-local repeatable_quest_template = {
-   name = a_env.GetObjectiveQuestName,
-   state = a_env.GetObjectiveStateDefault,
-   pickedup = a_env.GetObjectiveQuestPickedup,
-   turnin = a_env.GetObjectiveQuestReadyForTurnIn,
-   completed = a_env.GetObjectiveQuestCompleted,
-   available = true, -- non-repeatable will also have dynamic "available"
-}
-
-a_env.daily_quest_template = table_merge_shallow_left({ repeatable_quest_template, { period = "daily" } })
-a_env.weekly_quest_template = table_merge_shallow_left({ repeatable_quest_template, { period = "weekly" } })
 
 a_env.state_colors = {
    ["completed"] = GREEN_FONT_COLOR,
