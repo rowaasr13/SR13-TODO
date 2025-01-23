@@ -70,7 +70,33 @@ end
 
 local function DoNothing() end
 
-function broker:OnEnter(args)
+local function broker_OnLeave(self)
+   tooltip:SetScale(1)
+   qtip:Release(tooltip)
+   tooltip = nil
+end
+broker.OnLeave = broker_OnLeave
+
+local function tooltip_RescaleToScreen(tooltip, args)
+   -- TODO: incorrect, must calculate only size occupied from smart anchor
+   local tooltip_height = tooltip:GetHeight() * tooltip:GetEffectiveScale()
+   local uiparent_height = UIParent:GetHeight() * UIParent:GetEffectiveScale()
+   tooltip_height = tooltip_height + 15
+   if (tooltip_height > uiparent_height) then
+      if not (args and args.recursion and args.recursion > 5) then
+         local scale = (uiparent_height / tooltip_height) * ((args and args.rescale) or 1)
+         local new_args = {
+            rescale = scale,
+            recursion = ((args and args.recursion) or 0) + 1
+         }
+         return new_args
+      else
+         assert(true, "Deep recursion protection - should not happen?")
+      end
+   end
+end
+
+local function broker_OnEnter(self, args)
    local AddSingleObjectiveLine = AddSingleObjectiveLine
    local AddOutputTable = AddOutputTable
    local AddOutputTables = AddOutputTables
@@ -105,14 +131,17 @@ function broker:OnEnter(args)
       -- do nothing
    else
       tooltip:SmartAnchorTo(self)
+
+      local new_args = tooltip_RescaleToScreen(tooltip, args)
+      if new_args then
+         broker_OnLeave(self)
+         return broker_OnEnter(self, new_args)
+      end
+
       tooltip:Show()
    end
 end
-
-function broker:OnLeave()
-   qtip:Release(tooltip)
-   tooltip = nil
-end
+broker.OnEnter = broker_OnEnter
 
 local function AllOutputTables()
    broker:OnEnter({ show = false })
