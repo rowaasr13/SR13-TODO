@@ -113,12 +113,12 @@ local function broker_OnEnter(self, args)
 
    AddSingleObjectiveLine(tooltip, a_env.objectives.valdrakken_heroic)
    AddOutputTable(tooltip, a_env.OutputTableWeeklySign())
-   AddOutputTable(tooltip, a_env.OutputTableTimewalking())
    AddSingleObjectiveLine(tooltip, a_env.objectives.darkmoon_faire.ears)
 
    AddOutputTables(tooltip, a_env.OutputTableDragonflightReputations())
    AddOutputTables(tooltip, a_env.OutputTableDragonflightWorldBosses())
    AddOutputTables(tooltip, a_env.OutputTableDragonflightEvents())
+      AddOutputTables(tooltip, a_env.OutputTablesTimewalking())
 
    AddOutputTables(tooltip, a_env.OutputTablesProfessions())
    AddSingleObjectiveLine(tooltip, a_env.objectives.profession.valdrakken_mettle)
