@@ -11,6 +11,7 @@ templates.quest.lua
 
 objectives.lua
 objectives.dungeons.lua
+objectives.timewalking.lua
 objectives.items.lua
 
 objectives.unsorted.lua
@@ -19,7 +20,6 @@ objectives.dragonflight.reputation.lua
 objectives.dragonflight.worldboss.lua
 objectives.dragonflight.dreamsurge.lua
 objectives.dragonflight.profession.lua
-objectives.timewalking.lua
 
 objectives.event.brewfest.lua
 objectives.event.hallowsend.lua

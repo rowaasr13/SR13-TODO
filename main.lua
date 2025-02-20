@@ -1,6 +1,7 @@
 local a_name, a_env = ...
 
 local table_merge_shallow_left = _G["SR13-Lib"].table_utils.table_merge_shallow_left
+local array_of_pairs_iter = _G["SR13-Lib"].pair_utils.array_of_pairs_iter
 
 function a_env.GetObjectiveStateDefault(objective)
    local available = a_env.GetLazy(objective, 'available')
@@ -24,11 +25,22 @@ function a_env.GetObjectiveStateDefault(objective)
    end
 end
 
-function a_env.CalculateObjectivesToOutputTable(objectives)
+function a_env.CalculateObjectivesToOutputTable(objectives, mode)
+   assert(objectives, "objectives is nil")
    local output = {}
-   for idx = 1, #objectives do
-      local objective = objectives[idx]
 
+   local iter_func, iter_state, iter_var
+   if mode == "array_of_pairs" then
+      iter_func, iter_state, iter_var = array_of_pairs_iter(objectives)
+   else
+      iter_func, iter_state, iter_var = ipairs(objectives)
+   end
+
+   for idx, v1, v2 in iter_func, iter_state, iter_var do
+      local objective
+      if mode == "array_of_pairs" then objective = v2 else objective = v1 end
+
+      local available = a_env.GetLazy(objective, "available")
       local state = a_env.GetLazy(objective, "state")
       local state_color = a_env.state_colors[state]
       local name = a_env.GetLazy(objective, "name")
@@ -37,6 +49,7 @@ function a_env.CalculateObjectivesToOutputTable(objectives)
       local progress = (state == "pickedup") and (objective.progress ~= nil) and a_env.GetLazy(objective, 'progress')
 
       local output_line = {
+         available = available,
          state = state,
          state_color = state_color,
          progress = progress,
@@ -105,7 +118,14 @@ function a_env.OutputTableLeaveOnlyActiveQuest(output_table)
 end
 
 function a_env.GetObjectiveQuestName(objective)
-   return "cachenonnil", QuestUtils_GetQuestName(objective.quest_id)
+   local name = QuestUtils_GetQuestName(objective.quest_id)
+   -- if objective.quest_id == 72724 then print(("questnmame: %q"):format(name)) end
+   return "cachenonempty", name
+end
+
+function a_env.GetObjectiveItemName(objective)
+   local name = GetItemInfo(objective.item_id)
+   return "cachenonempty", name
 end
 
 function a_env.GetObjectiveQuestNameAnd1stObjective(objective)
@@ -145,11 +165,13 @@ a_env.state_colors = {
    ["turnin"] = YELLOW_FONT_COLOR,
    ["inbags"] = YELLOW_FONT_COLOR,
    ["queued"] = YELLOW_FONT_COLOR,
+   ["itemmissing"] = RED_FONT_COLOR,
 }
 
 a_env.state_display_text = {
    ["pickedup"] = "picked up",
    ["turnin"] = "turn-in",
    ["notpickedup"] = "not picked up",
-   ["inbags"] = "still in bags"
+   ["inbags"] = "still in bags",
+   ["itemmissing"] = "missing!",
 }
