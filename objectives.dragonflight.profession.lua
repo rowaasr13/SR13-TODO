@@ -14,6 +14,7 @@ local function GetProfessionName(objective)
 
    return "cachenonempty", profession_local_name
 end
+a_env.GetProfessionName = GetProfessionName
 
 a_env.PlayerHasProfession = function(objective)
    local profession_skill_line_id = C_TradeSkillUI.GetProfessionSkillLineID(objective.profession)
@@ -353,6 +354,12 @@ local one_quest_per_group_weeklies = {
    { valdrakken_weekly = "Valdrakken" },
    { loamm_weekly = "Loamm" },
 }
+local orderer_profession_enums = {}
+for key in pairs(source_data) do orderer_profession_enums[#orderer_profession_enums + 1] = key end
+table.sort(orderer_profession_enums)
+
+a_env.objectives.profession.source_data = source_data
+a_env.objectives.profession.orderer_profession_enums = orderer_profession_enums
 
 -- Combination of array_of_pairs_iter + table_merge_shallow_left
 -- Iterates over all pairs in array, merges everything to left and writes back to "value" part of pairs.
@@ -377,10 +384,6 @@ end
 
 
 local function BuildObjectivesProfessions()
-   local orderer_profession_enums = {}
-   for key in pairs(source_data) do orderer_profession_enums[#orderer_profession_enums + 1] = key end
-   table.sort(orderer_profession_enums)
-
    for _, profession_enum in ipairs(orderer_profession_enums) do
       local profession_data = source_data[profession_enum]
       for template_idx, template_key, template_data in array_of_pairs_iter(templates) do
@@ -397,6 +400,23 @@ local function BuildObjectivesProfessions()
 end
 end
 BuildObjectivesProfessions()
+
+local output_table_postprocess = {
+   valdrakken_weekly  = function(output_table) output_table.group_suffix = "Valdrakken" OneActiveProfessionQuestGroup(output_table) end,
+   factions_weekly    = function(output_table) output_table.group_suffix = "Factions" OneActiveProfessionQuestGroup(output_table) end,
+   item_gather_weekly = function(output_table)
+      local group_name = output_table.profession_name .. " Gather"
+      CombineGatherQuestGroup(output_table)
+      output_table[1].info = group_name
+   end,
+   item_weekly        = function(output_table)
+      local group_name = output_table.profession_name .. " Items"
+      for idx = 1, #output_table do output_table[idx].info = group_name end
+   end,
+   valdrakken_orders  = function(output_table) output_table.group_suffix = "Orders" OneActiveProfessionQuestGroup(output_table) end,
+   darkmoon_faire     = function(output_table) if output_table[1] then output_table[1].info = output_table.profession_name .. " Darkmoon Faire" end end,
+}
+a_env.objectives.profession.output_table_postprocess = output_table_postprocess
 
 function a_env.OutputTablesProfessions()
    local output_tables = {}

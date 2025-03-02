@@ -24,5 +24,6 @@ objectives.dragonflight.profession.lua
 objectives.event.brewfest.lua
 objectives.event.hallowsend.lua
 objectives.event.love.lua
+objectives.event.darkmoonfaire.lua
 
 objectives.event.remix.pandaria.lua
