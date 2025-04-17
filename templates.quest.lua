@@ -6,6 +6,12 @@ local table_merge_shallow_left = _G["SR13-Lib"].table_utils.table_merge_shallow_
 local table_add_pairs = _G["SR13-Lib"].pair_utils.table_add_pairs
 local pairs_get_vals = _G["SR13-Lib"].pair_utils.pairs_get_vals
 
+function a_env.GetObjectiveQuestName(objective)
+   local name = QuestUtils_GetQuestName(objective.quest_id)
+   -- if objective.quest_id == 72724 then print(("questnmame: %q"):format(name)) end
+   return "cachenonempty", name
+end
+
 -- Calls default state function and in addition can display if starter item is still in bags even if quest is completed
 function a_env.GetObjectiveStateQuest(objective)
    local state = a_env.GetLazy(objective, a_env.GetObjectiveStateDefault)
@@ -34,6 +40,49 @@ function a_env.GetObjectiveStateQuest(objective)
    end
 
    return "ok", state
+end
+
+function a_env.GetObjectiveQuestNameAnd1stObjective(objective)
+   local _, quest_name = a_env.GetObjectiveQuestName(objective)
+   if not quest_name then return end
+
+   -- TODO: get from QUEST LOG so we don't have to wait for info to load
+   local quest_1st_objective = GetQuestObjectiveInfo(objective.quest_id, 1, false)
+   if (not quest_1st_objective) or (quest_1st_objective == "") then return "ok", quest_name end
+
+   quest_1st_objective = quest_1st_objective:gsub("^%d+/%d+%s+", "")
+   quest_name = ("%s (%s)"):format(quest_name, quest_1st_objective)
+
+   return "cachenonnil", quest_name
+end
+
+function a_env.GetObjectiveQuestCompleted(objective)
+   if C_QuestLog.IsQuestFlaggedCompleted(objective.quest_id) then return "ok", "IsComplete" end
+end
+
+function a_env.GetObjectiveQuestPickedup(objective)
+   if C_QuestLog.GetLogIndexForQuestID(objective.quest_id) then return "ok", "GetLogIndexForQuestID" end
+end
+
+function a_env.GetObjectiveQuestReadyForTurnIn(objective)
+   if C_QuestLog.ReadyForTurnIn(objective.quest_id) then return "ok", "ReadyForTurnIn" end
+end
+
+function a_env.GetObjectiveQuestSingleObjectiveProgressString(objective)
+   local text, objectiveType, finished, fulfilled, required = GetQuestObjectiveInfo(objective.quest_id, 1, false)
+   if fulfilled and required then return "ok", fulfilled .. '/' .. required end
+end
+
+function a_env.GetObjectiveLargestIncompleteObjectiveProgressString(objective)
+   local _, _, _, largest_fulfilled, largest_required = GetQuestObjectiveInfo(objective.quest_id, 1, false)
+   if largest_fulfilled and largest_required then
+      for idx = 2, 40 do
+         local text, objectiveType, finished, fulfilled, required = GetQuestObjectiveInfo(objective.quest_id, idx, false)
+         if not (fulfilled and required) then break end
+         if required > largest_required then largest_fulfilled = fulfilled largest_required = required end
+      end
+      return "ok", largest_fulfilled .. '/' .. largest_required
+   end
 end
 
 local quest_template = {

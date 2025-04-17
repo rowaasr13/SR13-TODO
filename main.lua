@@ -117,47 +117,10 @@ function a_env.OutputTableLeaveOnlyActiveQuest(output_table)
    return output_table
 end
 
-function a_env.GetObjectiveQuestName(objective)
-   local name = QuestUtils_GetQuestName(objective.quest_id)
-   -- if objective.quest_id == 72724 then print(("questnmame: %q"):format(name)) end
-   return "cachenonempty", name
-end
-
 function a_env.GetObjectiveItemName(objective)
    local name = GetItemInfo(objective.item_id)
    return "cachenonempty", name
 end
-
-function a_env.GetObjectiveQuestNameAnd1stObjective(objective)
-   local _, quest_name = a_env.GetObjectiveQuestName(objective)
-   if not quest_name then return end
-
-   -- TODO: get from QUEST LOG so we don't have to wait for info to load
-   local quest_1st_objective = GetQuestObjectiveInfo(objective.quest_id, 1, false)
-   quest_1st_objective = quest_1st_objective:gsub("^%d+/%d+%s+", "")
-   if (not quest_1st_objective) or (quest_1st_objective == "") then return "ok", quest_name end
-
-   quest_name = ("%s (%s)"):format(quest_name, quest_1st_objective)
-   return "cachenonnil", quest_name
-end
-
-function a_env.GetObjectiveQuestCompleted(objective)
-   if C_QuestLog.IsQuestFlaggedCompleted(objective.quest_id) then return "ok", "IsComplete" end
-end
-
-function a_env.GetObjectiveQuestPickedup(objective)
-   if C_QuestLog.GetLogIndexForQuestID(objective.quest_id) then return "ok", "GetLogIndexForQuestID" end
-end
-
-function a_env.GetObjectiveQuestReadyForTurnIn(objective)
-   if C_QuestLog.ReadyForTurnIn(objective.quest_id) then return "ok", "ReadyForTurnIn" end
-end
-
-function a_env.GetObjectiveQuestSingleObjectiveProgressString(objective)
-   local text, objectiveType, finished, fulfilled, required = GetQuestObjectiveInfo(objective.quest_id, 1, false)
-   if fulfilled and required then return "ok", fulfilled .. '/' .. required end
-end
-
 
 a_env.state_colors = {
    ["completed"] = GREEN_FONT_COLOR,
