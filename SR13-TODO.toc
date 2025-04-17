@@ -16,6 +16,8 @@ objectives.items.lua
 
 objectives.unsorted.lua
 
+objectives.shadowlands.lua
+
 objectives.dragonflight.reputation.lua
 objectives.dragonflight.worldboss.lua
 objectives.dragonflight.dreamsurge.lua
