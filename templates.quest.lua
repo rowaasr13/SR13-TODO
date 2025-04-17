@@ -74,15 +74,19 @@ function a_env.GetObjectiveQuestSingleObjectiveProgressString(objective)
 end
 
 function a_env.GetObjectiveLargestIncompleteObjectiveProgressString(objective)
-   local _, _, _, largest_fulfilled, largest_required = GetQuestObjectiveInfo(objective.quest_id, 1, false)
-   if largest_fulfilled and largest_required then
-      for idx = 2, 40 do
-         local text, objectiveType, finished, fulfilled, required = GetQuestObjectiveInfo(objective.quest_id, idx, false)
-         if not (fulfilled and required) then break end
-         if required > largest_required then largest_fulfilled = fulfilled largest_required = required end
+   local largest_fulfilled, largest_required = 0, 0
+   for idx = 1, 40 do
+      local text, objectiveType, finished, fulfilled, required = GetQuestObjectiveInfo(objective.quest_id, idx, false)
+      if not (fulfilled and required) then break end
+      if objectiveType == "progressbar" then
+         required = 100
+         fulfilled = GetQuestProgressBarPercent(objective.quest_id)
+         -- for now consider progressbar sub-objective as always largest and just return it
+         return "ok", fulfilled .. "%"
       end
-      return "ok", largest_fulfilled .. '/' .. largest_required
+      if required > largest_required then largest_fulfilled = fulfilled largest_required = required end
    end
+   return "ok", largest_fulfilled .. '/' .. largest_required
 end
 
 local quest_template = {
