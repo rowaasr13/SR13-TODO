@@ -39,6 +39,12 @@ function a_env.GetObjectiveStateQuest(objective)
       end
    end
 
+   -- There's generally no way a one-time quest can "stop" being completed, so we can cache this state
+   local completed_forever = (state == "completed") and (not check_inbags) and (not objective.period)
+   if completed_forever then
+      return "cache", state
+   end
+
    return "ok", state
 end
 
