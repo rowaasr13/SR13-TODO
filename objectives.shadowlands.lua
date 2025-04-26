@@ -15,9 +15,10 @@ local ordered = {
    { anima1000_necrolord = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 61983, covenant_id = Enum.CovenantType.Necrolord, available = GetObjectiveCovenantAvailable, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } }) },
    { anima1000_nightfae  = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 61984, covenant_id = Enum.CovenantType.NightFae,  available = GetObjectiveCovenantAvailable, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } }) },
    { korthia = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 63949, faction_id = 2470, info = "Death's Advance @ Korthia", progress = a_env.GetObjectiveLargestIncompleteObjectiveProgressString } }) }, -- add unlock
-   { korthia_worldboss = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 64531 } }) }, -- add unlock
-   { zereth_worldboss = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 65143 } }) }, -- add unlock (only need portal?)
    { zereth = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 66042, faction_id = 2478, info = "Enlgihtened @ Zereth Mortis", progress = a_env.GetObjectiveLargestIncompleteObjectiveProgressString } }) }, -- add unlock
+   { s1_worldboss_mortanis = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 61816, info = C_Map.GetAreaInfo(11462) } }) },
+   { s2_worldboss = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 64531, info = C_Map.GetAreaInfo(11400) } }) }, -- add unlock
+   { s3_worldboss = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 65143, info = C_Map.GetAreaInfo(13536) } }) }, -- add unlock (only need portal?)
 }
 
 local empty = {}
