@@ -1,5 +1,7 @@
 local a_name, a_env = ...
 
+SV_SR13TODO = SV_SR13TODO or {}
+
 local table_merge_shallow_left = _G["SR13-Lib"].table_utils.table_merge_shallow_left
 local array_of_pairs_iter = _G["SR13-Lib"].pair_utils.array_of_pairs_iter
 
