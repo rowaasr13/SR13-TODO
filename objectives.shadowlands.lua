@@ -14,7 +14,10 @@ local ordered = {
    { anima1000_kyrian    = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 61982, covenant_id = Enum.CovenantType.Kyrian,    available = GetObjectiveCovenantAvailable, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } }) },
    { anima1000_necrolord = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 61983, covenant_id = Enum.CovenantType.Necrolord, available = GetObjectiveCovenantAvailable, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } }) },
    { anima1000_nightfae  = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 61984, covenant_id = Enum.CovenantType.NightFae,  available = GetObjectiveCovenantAvailable, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } }) },
+   -- Different quest from above - this one for convervatory
+   { nightfae_anima1000  = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 62441, covenant_id = Enum.CovenantType.NightFae,  available = GetObjectiveCovenantAvailable, progress = a_env.GetObjectiveQuestSingleObjectiveProgressString } }) },
    { korthia = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 63949, faction_id = 2470, info = "Death's Advance @ Korthia", progress = a_env.GetObjectiveLargestIncompleteObjectiveProgressString } }) }, -- add unlock
+   { korthia_rift = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 65266, info = "Codex @ Korthia", progress = a_env.GetObjectiveLargestIncompleteObjectiveProgressString } }) }, -- add unlock: requires archive Tier 4
    { zereth = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 66042, faction_id = 2478, info = "Enlgihtened @ Zereth Mortis", progress = a_env.GetObjectiveLargestIncompleteObjectiveProgressString } }) }, -- add unlock
    { s1_worldboss_mortanis = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 61816, info = C_Map.GetAreaInfo(11462) } }) },
    { s2_worldboss = table_merge_shallow_left({ a_env.weekly_quest_template, { quest_id = 64531, info = C_Map.GetAreaInfo(11400) } }) }, -- add unlock
