@@ -19,9 +19,14 @@ end
 -- Objective is only "available" (i.e. shown at all) if item EXISTS. count > 0 means available = true. Serves as both available and progress tracker.
 local function GetObjectiveItemMustBeRemovedCount(objective)
    if not objective.item_id then return "cachenonnil", "<NOT SET>" end
-   local count = GetItemCount(objective.item_id, false, false, false)
+   local completed
+   if objective.quest_id_completed then -- this quest must be completed for item to be considered no longer useful
+      if C_QuestLog.IsQuestFlaggedCompleted(objective.quest_id_completed) then completed = true end
+   end
+   local count = GetItemCount(objective.item_id, true, true, true)
    -- print("GetObjectiveItemMustExistsAvailable", objective.item_id, count)
    if count == 0 then count = false end
+   if count and completed then return "ok", "completed" end
    return "ok", count
 end
 
