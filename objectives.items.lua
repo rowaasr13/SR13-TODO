@@ -57,12 +57,14 @@ local template_item_must_be_removed = {
 a_env.objectives.items = a_env.objectives.items or {}
 
 local items = {
+   { dmf_guide = table_merge_shallow_left({ template_item_must_exist, { item_id = 71634 } }) },
    { expedition_shovel = table_merge_shallow_left({ template_item_must_exist, { item_id = 191304, info = "Blacksmithing / Dragonscale" } }) },
    { dig_map = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 205982, info = "Loamm Niffen" } }) },
    { buried_collection = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 205288, info = "Loamm Niffen" } }) },
    { dragonscale_turnin = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 192055, info = "Dragonscale Expedition Basecamp", name_highlight_aura_spell_id = 430666 } }) },
    { valdrakken_turnin = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 199906, info = "Valdrakken" } }) },
    { iskaara_turnin = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 200071, info = "Iskaara", name_highlight_aura_spell_id = 430666 } }) },
+   { maruuk_turnin_soulbound = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 200093, info = "Maruukai", name_highlight_aura_spell_id = 430666 } }) },
    { iskaara_story1 = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 201470, info = "Iskaara", name_highlight_aura_spell_id = 430666 } }) },
    { iskaara_story2 = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 201471, info = "Iskaara", name_highlight_aura_spell_id = 430666 } }) },
    { iskaara_reach = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 202854, info = "Forbidden Reach - Iskaara Tuskarr" } }) },
@@ -70,6 +72,14 @@ local items = {
    { reach_tailoring1 = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 203406, info = "Forbidden Reach - Tailoring" } }) },
    { reach_cooking2 = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 203409, info = "Forbidden Reach - Cooking" } }) },
    { ancient_vault_artifact = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 201411, info = "Dragonscale Expedition @Valdrakken", name_highlight_aura_spell_id = 430666 } }) },
+   { merithras_blessing = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 201779, info = "Valdrakken +2500 rep." } }) },
+   { snowpelt1 = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 202017, info = "Snowpelt Furbolgs @ Azure Span" } }) },
+   { snowpelt2 = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 202018, info = "Snowpelt Furbolgs @ Azure Span" } }) },
+   { ardenweald_cache = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 180652, quest_id_completed = 61110, info = "Cache of the Night @ Ardenweald" } }) }, -- + add all parts, quest_id comes from achievement criteria GetAchievementCriteriaInfo(14313, 14)
+   { enticing_anima = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 173939, info = "Revendreth" } }) },
+   { forbidden_ink = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 182475, info = "Revendreth" } }) },
+   { archivists_codex = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 185636, info = "Can be bought back in Korthia" } }) },
+   { korthia_egg = table_merge_shallow_left({ template_item_must_be_removed, { item_id = 187054, info = C_Map.GetAreaInfo(13570) .. ', ' .. C_Map.GetAreaInfo(13629) } }) },
 }
 for idx, key, val in array_of_pairs_iter(items) do
    if val.name_highlight_aura_spell_id then val.name = GetObjectiveItemNameWithHighlightByAura end
