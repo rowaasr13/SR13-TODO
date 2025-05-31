@@ -13,6 +13,7 @@ objectives.lua
 objectives.dungeons.lua
 objectives.timewalking.lua
 objectives.items.lua
+objectives.paragon.lua
 
 objectives.unsorted.lua
 

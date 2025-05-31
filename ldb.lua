@@ -126,6 +126,8 @@ local function broker_OnEnter(self, args)
    AddOutputTable(tooltip, a_env.OutputTableHallowsEnd())
    AddOutputTable(tooltip, a_env.OutputTableWinterVeil())
    AddOutputTables(tooltip, a_env.OutputTablesLove())
+      AddOutputTable(tooltip, a_env.OutputTableParagonRewards())
+
 
    if args and args.show == false then
       -- do nothing
