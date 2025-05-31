@@ -34,13 +34,14 @@ local function BuildRewardQuestsList()
          end
          local name = factionData.name
          if (parentName) then name = parentName .. " > " .. name end
-         reward_quests[#reward_quests + 1] = table_merge_shallow_left({ a_env.quest_template, { quest_id = rewardQuestID, info = name } })
+         local loopValue = currentValue % threshold
+         local progress_to_next = RAF_NEXT_REWARD .. " " .. loopValue .. " / " .. threshold
+         reward_quests[#reward_quests + 1] = table_merge_shallow_left({ a_env.quest_template, { quest_id = rewardQuestID, name = name, info = progress_to_next } })
          -- print(name)
          -- print("===") DevTools_Dump(factionData)
       end
    until true end
 end
-
 
 function a_env.OutputTableParagonRewards()
    BuildRewardQuestsList()
