@@ -95,6 +95,49 @@ function a_env.GetObjectiveLargestIncompleteObjectiveProgressString(objective)
    return "ok", largest_fulfilled .. '/' .. largest_required
 end
 
+-- Detects if periodic quest is active/available right now
+-- by checking several sources in quest log, quest expiration time and if quest is shown on map
+-- Test cases:
+-- /dump LGO_Available_PeriodicQuestActive({ quest_id = 61815, quest_map_id = 1565 })
+-- /dump LGO_Available_PeriodicQuestActive({ quest_id = 63784, quest_map_id = 1961 }) -- Korthia / Gold
+-- /dump LGO_Available_PeriodicQuestActive({ quest_id = 63934, quest_map_id = 1961 }) -- Assail mail
+local cache_map_quest = {}
+function a_env.LGO_Available_PeriodicQuestActive(objective)
+   local quest_id = objective.quest_id
+   if C_QuestLog.IsQuestFlaggedCompleted(quest_id) then return "ok",  "IsQuestFlaggedCompleted" end
+   if C_QuestLog.GetLogIndexForQuestID(quest_id) then return "ok", "GetLogIndexForQuestID" end
+   if C_QuestLog.ReadyForTurnIn(quest_id) then return "ok", "ReadyForTurnIn" end
+   -- CAN RETURN NIL for up to 30 seconds after login, QUEST_LOG_UPDATE fires when data becomes available but it has no arguments to deduce what kind of update it was
+   if C_TaskQuest.GetQuestTimeLeftSeconds(quest_id) then return "ok",  "GetQuestTimeLeftSeconds" end
+
+   local quest_map_id = objective.quest_map_id
+   if quest_map_id then
+      local curtime = GetTime()
+      if cache_map_quest.GetTime ~= curtime then
+         -- print("GetQuestsOnMap CACHE WIPE")
+         wipe(cache_map_quest)
+         cache_map_quest.GetTime = curtime
+      end
+
+      if not cache_map_quest[quest_map_id] then
+         -- print("GetQuestsOnMap map MISS", quest_map_id)
+         local info = C_TaskQuest.GetQuestsOnMap(quest_map_id)
+         for idx = 1, #info do
+            local entry = info[idx]
+            local entry_quest_id = entry.questID
+            cache_map_quest[quest_map_id .. ';' .. entry_quest_id] = true
+         end
+         cache_map_quest[quest_map_id] = true
+      else
+         -- print("GetQuestsOnMap map HIT!", quest_map_id)
+      end
+
+      if cache_map_quest[quest_map_id .. ';' .. quest_id] then
+         return "ok", "GetQuestsOnMap"
+      end
+   end
+end
+
 local quest_template = {
    name = a_env.GetObjectiveQuestName,
    state = a_env.GetObjectiveStateQuest,
