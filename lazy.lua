@@ -31,6 +31,10 @@ function a_env.GetLazy(tbl, key)
 
    if res == "cachenonnil" and val ~= nil then
       tbl[key] = val
+   elseif res == "cachetruthy" and val then
+      tbl[key] = val
+   elseif res == "cachefalsy" and (not val) then
+      tbl[key] = val
    elseif res == "cachenonempty" and (val ~= nil and val ~= '') then
       tbl[key] = val
    end
