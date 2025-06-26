@@ -7,6 +7,7 @@ lazy.lua
 main.lua
 ldb.lua
 
+templates.generic.lua
 templates.quest.lua
 
 objectives.lua
