@@ -38,17 +38,19 @@ function a_env.CalculateObjectivesToOutputTable(objectives, mode)
       iter_func, iter_state, iter_var = ipairs(objectives)
    end
 
-   for idx, v1, v2 in iter_func, iter_state, iter_var do
+   local output_idx = 1
+   for idx, v1, v2 in iter_func, iter_state, iter_var do repeat
       local objective
       if mode == "array_of_pairs" then objective = v2 else objective = v1 end
 
       local available = a_env.GetLazy(objective, "available")
+      if not available then break end -- we don't display non-available at all, no reason to calculate rest of data
       local state = a_env.GetLazy(objective, "state")
       local state_color = a_env.state_colors[state]
       local name = a_env.GetLazy(objective, "name")
       local info = objective.info and a_env.GetLazy(objective, "info")
       local period = objective.period and a_env.GetLazy(objective, "period")
-      local progress = (state == "pickedup") and (objective.progress ~= nil) and a_env.GetLazy(objective, 'progress')
+      local progress = (state == "pickedup") and (objective.progress ~= nil) and a_env.GetLazy(objective, "progress")
 
       local output_line = {
          available = available,
@@ -59,8 +61,9 @@ function a_env.CalculateObjectivesToOutputTable(objectives, mode)
          info = info,
          period = period,
       }
-      output[idx] = output_line
-   end
+      output[output_idx] = output_line
+      output_idx = output_idx + 1
+   until true end
 
    return output
 end
