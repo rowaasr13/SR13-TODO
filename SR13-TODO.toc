@@ -1,6 +1,6 @@
 ## Interface: 100107
 ## Title: SR13-TODO
-## OptionalDeps: LibDataBroker-1.1, LibQTip-1.0, SR13-Lib
+## OptionalDeps: LibDataBroker-1.1, LibQTip-1.0, LibTTScan-1.0, SR13-Lib, SR13-Utils
 ## SavedVariables: SV_SR13TODO
 
 lazy.lua
@@ -28,6 +28,7 @@ objectives.dragonflight.profession.lua
 objectives.event.brewfest.lua
 objectives.event.hallowsend.lua
 objectives.event.love.lua
+objectives.event.midsummer.lua
 objectives.event.darkmoonfaire.lua
 
 objectives.event.remix.pandaria.lua
